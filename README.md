@@ -2,6 +2,13 @@ SpineHx is haxe/nme port of spine-libgdx skeletal animation library.
 
 Works on Haxe 3 and NME 4.
 
+## Demos
+[Live Flash](https://spinehx-demos.googlecode.com/hg/test01/flash/index.html) | 
+[Live HTML5](https://spinehx-demos.googlecode.com/hg/test01/html5/index.html) |
+[Download Linux binaries](https://spinehx-demos.googlecode.com/hg/test01/linux-bin.tar.gz) | 
+[Download Android *.apk](https://spinehx-demos.googlecode.com/hg/test01/spinehx-AnimationStateTest-debug.apk) | 
+[All-in-one](https://bitbucket.org/nitrobin/spinehx/downloads )
+
 ## WARNING
 It is experimental port. Need more tests. Be careful for production using.
 
