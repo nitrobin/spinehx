@@ -51,7 +51,8 @@ class Skin {
 	/** @return May be null. */
 	public function getAttachment (slotIndex:Int,  name:String):Attachment {
         var id = AttachmentEntry.makeId(slotIndex, name);
-		return attachments.get(id).attachment;
+        var attachmentEntry = attachments.get(id);
+        return attachmentEntry != null ? attachmentEntry.attachment : null;
 	}
 
 	public function findNamesForSlot (slotIndex:Int, names:Array<String>) {
