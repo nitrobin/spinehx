@@ -107,6 +107,7 @@ class AttachmentEntry {
         id = makeId(slotIndex, name);
     }
 
+//TODO remove string keys
     public static function makeId (slotIndex:Int, name:String):String {
        return slotIndex + ":" + name;
     }
