@@ -37,9 +37,8 @@ import spinehx.ex.IllegalArgumentException;
 import spinehx.ex.RuntimeException;
 import spinehx.attachments.AtlasAttachmentLoader;
 import spinehx.atlas.TextureAtlas;
-import haxe.Json;
-import Reflect;
-using Reflect;
+import spinehx.JsonUtils;
+using spinehx.JsonUtils;
 
 class SkeletonJson {
 
@@ -49,17 +48,16 @@ class SkeletonJson {
     public static inline var TIMELINE_ATTACHMENT = "attachment";
     public static inline var TIMELINE_COLOR = "color";
 
-    private var  json:Json;
     private var attachmentLoader: AttachmentLoader;
     private var scale:Float = 1;
 
-    public function new(atlas:TextureAtlas) {
-        attachmentLoader = new AtlasAttachmentLoader(atlas);
+    public static function create(atlas:TextureAtlas) {
+        return new SkeletonJson(new AtlasAttachmentLoader(atlas));
     }
 
-//    public SkeletonJson (AttachmentLoader attachmentLoader) {
-//        this.attachmentLoader = attachmentLoader;
-//    }
+    public function new(attachmentLoader:AttachmentLoader) {
+        this.attachmentLoader = attachmentLoader;
+    }
 
     public function getScale ():Float {
         return scale;
@@ -76,17 +74,17 @@ class SkeletonJson {
         var skeletonData = new SkeletonData();
         skeletonData.setName(name);
 
-        var root:Dynamic = Json.parse(fileData); //OrderedMap<String, ?> root = json.fromJson(OrderedMap.class, file);
+        var root:JsonNode = JsonUtils.parse(fileData); //OrderedMap<String, ?> root = json.fromJson(OrderedMap.class, file);
 
         // Bones.
-        for (boneMap in cast(root.getProperty("bones"), Array<Dynamic>)) {
+        for (boneMap in root.getNodesArray("bones")) {
             var parent:BoneData = null;
-            var parentName:String = cast(boneMap.getProperty("parent"));
+            var parentName:String = boneMap.getStr("parent");
             if (parentName != null) {
                 parent = skeletonData.findBone(parentName);
                 if (parent == null) throw new SerializationException("Parent bone not found: " + parentName);
             }
-            var boneData = new BoneData(cast(boneMap.getProperty("name"), String), parent);
+            var boneData = new BoneData(boneMap.getStr("name"), parent);
             boneData.length = getFloat(boneMap, "length", 0) * scale;
             boneData.x = getFloat(boneMap, "x", 0) * scale;
             boneData.y = getFloat(boneMap, "y", 0) * scale;
@@ -97,35 +95,35 @@ class SkeletonJson {
         }
 
         // Slots.
-        var slots = cast(root.getProperty("slots"), Array<Dynamic>);
+        var slots = root.getNodesArray("slots");
         if (slots != null) {
             for (slotMap in slots) {
-                var slotName:String = cast(slotMap.getProperty("name"));
-                var boneName:String = cast(slotMap.getProperty("bone"));
+                var slotName:String = slotMap.getStr("name");
+                var boneName:String = slotMap.getStr("bone");
                 var boneData:BoneData = skeletonData.findBone(boneName);
                 if (boneData == null) throw new SerializationException("Slot bone not found: " + boneName);
                 var slotData = new SlotData(slotName, boneData);
 
-                var color:String = cast(slotMap.getProperty("color"));
+                var color:String = slotMap.getStr("color");
                 if (color != null) slotData.getColor().set2(Color.valueOf(color));
 
-                slotData.setAttachmentName(cast(slotMap.getProperty("attachment"), String));
+                slotData.setAttachmentName(slotMap.getStr("attachment"));
 
                 skeletonData.addSlot(slotData);
             }
         }
 
         // Skins.
-        var skinsMap:Dynamic = root.getProperty("skins");
+        var skinsMap:JsonNode = root.getNode("skins");
         if (skinsMap != null) {
             for (skinKey in skinsMap.fields()) {
-                var skinValue:Dynamic  = skinsMap.getProperty(skinKey);
+                var skinValue:JsonNode  = skinsMap.getNode(skinKey);
                 var skin = new Skin(skinKey);
                 for (slotKey in skinValue.fields()) {
-                    var slotValue:Dynamic = skinValue.getProperty(slotKey);
+                    var slotValue:JsonNode = skinValue.getNode(slotKey);
                     var slotIndex:Int = skeletonData.findSlotIndex(slotKey);
                     for (attachmentKey in slotValue.fields()) {
-                        var attachmentValue = slotValue.getProperty(attachmentKey);
+                        var attachmentValue:JsonNode = slotValue.getNode(attachmentKey);
                         var attachment:Attachment = readAttachment(skin, attachmentKey, attachmentValue);
                         if (attachment != null) skin.addAttachment(slotIndex, attachmentKey, attachment);
                     }
@@ -136,10 +134,10 @@ class SkeletonJson {
         }
 
         // Animations.
-        var animationMap:Dynamic = root.getProperty("animations");
+        var animationMap:JsonNode = root.getNode("animations");
         if (animationMap != null) {
             for (key in animationMap.fields())
-            readAnimation(key, animationMap.getProperty(key), skeletonData);
+            readAnimation(key, animationMap.getNode(key), skeletonData);
         }
 
 //        skeletonData.bones.shrink();
@@ -149,11 +147,11 @@ class SkeletonJson {
         return skeletonData;
     }
 
-    private function readAttachment (skin:Skin, name:String, map:Dynamic):Attachment {
-        var name2:String = cast(map.getProperty("name"));
+    private function readAttachment (skin:Skin, name:String, map:JsonNode):Attachment {
+        var name2:String = map.getStr("name");
         name = name2 != null ? name2 : name;
 
-        var typeStr:String = cast(map.getProperty("type"));
+        var typeStr:String = map.getStr("type");
         var type:AttachmentType = AttachmentTypes.valueOf(typeStr, AttachmentType.region);
         var attachment:Attachment = attachmentLoader.newAttachment(skin, type, name);
 
@@ -164,7 +162,7 @@ class SkeletonJson {
             if (fps == -1) throw new SerializationException("Region sequence attachment missing fps: " + name);
             regionSequenceAttachment.setFrameTime(fps);
 
-            var modeString = cast(map.getProperty("mode"),String);
+            var modeString = map.getStr("mode");
             regionSequenceAttachment.setMode(Modes.valueOf(modeString, Mode.forward));
         }
 
@@ -183,8 +181,8 @@ class SkeletonJson {
         return attachment;
     }
 
-    private function getFloat (map:Dynamic, name:String, defaultValue:Float=0):Float {
-        var value:Dynamic = map.getProperty(name);
+    private function getFloat (map:JsonNode, name:String, defaultValue:Float=0):Float {
+        var value:Dynamic = map.getDynamic(name);
         if (value == null) return defaultValue;
         if (Std.is(value, Int)) return cast(value, Int);
         return cast(value, Float);
@@ -197,19 +195,19 @@ class SkeletonJson {
         return cast(value, Float);
     }
 
-    private function readAnimation (name:String, map:Dynamic, skeletonData:SkeletonData):Void {
+    private function readAnimation (name:String, map:JsonNode, skeletonData:SkeletonData):Void {
         var timelines = new Array<Timeline>();
         var duration:Float = 0;
 
-        var bonesMap:Dynamic = map.getProperty("bones");
+        var bonesMap:JsonNode = map.getNode("bones");
         if (bonesMap != null) {
             for (boneName in bonesMap.fields()) {
-                var timelineMap:Dynamic = bonesMap.getProperty(boneName);
+                var timelineMap:JsonNode = bonesMap.getNode(boneName);
                 var boneIndex:Int = skeletonData.findBoneIndex(boneName);
                 if (boneIndex == -1) throw new SerializationException("Bone not found: " + boneName);
 
                 for (timelineName in timelineMap.fields()) {
-                var values = cast(timelineMap.getProperty(timelineName), Array<Dynamic>) ;
+                var values = timelineMap.getNodesArray(timelineName);
 
                 if (timelineName == TIMELINE_ROTATE) {
                     var timeline = new RotateTimeline(values.length);
@@ -254,14 +252,14 @@ class SkeletonJson {
             }
         }
 
-        var slotsMap:Dynamic = map.getProperty("slots");
+        var slotsMap:JsonNode = map.getNode("slots");
         if (slotsMap != null) {
             for (slotName in slotsMap.fields()) {
-                var timelineMap:Dynamic = slotsMap.getProperty(slotName);
+                var timelineMap:JsonNode = slotsMap.getNode(slotName);
                 var slotIndex:Int = skeletonData.findSlotIndex(slotName);
 
                 for (timelineName in timelineMap.fields()) {
-                    var values = cast(timelineMap.getProperty(timelineName), Array<Dynamic>);
+                    var values = timelineMap.getNodesArray(timelineName);
                     if (timelineName == TIMELINE_COLOR) {
                         var timeline = new ColorTimeline(values.length);
                         timeline.setSlotIndex(slotIndex);
@@ -269,7 +267,7 @@ class SkeletonJson {
                         var frameIndex:Int = 0;
                         for (valueMap in values) {
                             var time:Float = getFloat(valueMap, "time");
-                            var color:Color = Color.valueOf(cast(valueMap.getProperty("color"), String));
+                            var color:Color = Color.valueOf(valueMap.getStr("color"));
                             timeline.setFrame(frameIndex, time, color.r, color.g, color.b, color.a);
                             readCurve(timeline, frameIndex, valueMap);
                             frameIndex++;
@@ -284,7 +282,7 @@ class SkeletonJson {
                         var frameIndex:Int = 0;
                         for (valueMap in values) {
                             var time:Float = getFloat(valueMap, "time");
-                            timeline.setFrame(frameIndex++, time, cast(valueMap.getProperty("name"), String));
+                            timeline.setFrame(frameIndex++, time, valueMap.getStr("name"));
                         }
                         timelines.push(timeline);
                         duration = Math.max(duration, timeline.getFrames()[timeline.getFrameCount() - 1]);
@@ -300,7 +298,7 @@ class SkeletonJson {
     }
 
     private function readCurve (timeline:CurveTimeline, frameIndex:Int, valueMap:Dynamic):Void {
-        var curveObject = valueMap.getProperty("curve");
+        var curveObject = valueMap.getDynamic("curve");
         if (curveObject == null) return;
         if (curveObject == "stepped")
             timeline.setStepped(frameIndex);

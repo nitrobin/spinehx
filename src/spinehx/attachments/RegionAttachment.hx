@@ -245,3 +245,10 @@ class RegionAttachment extends Attachment {
 	}
 
 }
+
+class NumberUtils {
+    public static function intToFloatColor(value:Int):Float {
+        return value;//TODO
+    }
+}
+

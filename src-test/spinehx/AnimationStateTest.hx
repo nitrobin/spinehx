@@ -21,7 +21,7 @@ class AnimationStateTest extends Sprite {
         super();
 
         atlas = TextureAtlas.create("assets/spineboy.atlas", "assets/");
-        var json = new SkeletonJson(atlas);
+        var json = SkeletonJson.create(atlas);
         var skeletonData:SkeletonData = json.readSkeletonData("spineboy", nme.Assets.getText("assets/spineboy.json"));
 
         // Define mixing between animations.
