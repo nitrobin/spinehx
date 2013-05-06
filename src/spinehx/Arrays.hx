@@ -12,13 +12,4 @@ class Arrays {
         return a;
     }
 
-    public static function alloc <T>(n:Int, value:T):Array<T> {
-        var a = new Array<T>();
-        a[n-1] = value;
-        for (i in 0...n) {
-            a[i] = value;
-        }
-        return a;
-    }
-
 }
