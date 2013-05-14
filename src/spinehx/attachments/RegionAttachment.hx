@@ -52,16 +52,16 @@ class RegionAttachment extends Attachment {
     public static inline var U4 = 18;
     public static inline var V4 = 19;
 
-   	private var region:TextureRegion;
-	private var x:Float = 0;
-    private var y:Float = 0;
-    private var scaleX:Float = 0;
-    private var scaleY:Float = 0;
-    private var rotation:Float = 0;
-    private var width:Float = 0;
-    private var height:Float = 0;
-	private var vertices:Array<Float>;
-	private var offset:Array<Float>;
+    public var region:TextureRegion;
+    public var x:Float = 0;
+    public var y:Float = 0;
+    public var scaleX:Float = 0;
+    public var scaleY:Float = 0;
+    public var rotation:Float = 0;
+    public var width:Float = 0;
+    public var height:Float = 0;
+    public var vertices:Array<Float>;
+    public var offset:Array<Float>;
 
 	public function new (name:String) {
 		super(name);

@@ -126,6 +126,11 @@ class SkeletonRenderer extends Sprite {
         sprites = new ObjectMap<RegionAttachment, Sprite>();
     }
 
+    public function clearBuffers () {
+        for (s in sprites)s.visible = false;
+    }
+
+    // TODO fix flipx
     public function draw () {
         graphics.clear();
 		var drawOrder:Array<Slot> = skeleton.drawOrder;
@@ -136,41 +141,59 @@ class SkeletonRenderer extends Sprite {
 				regionAttachment.updateVertices(slot);
 				var vertices:Array<Float> = regionAttachment.getVertices();
 
-                var sprite:Sprite = get(regionAttachment);
-                var bone:Bone = slot.getBone();
+                var wrapper:Sprite = get(regionAttachment);
 
-                var x1 = vertices[RegionAttachment.X1];
-                var y1 = vertices[RegionAttachment.Y1];
-                var x2 = vertices[RegionAttachment.X2];
-                var y2 = vertices[RegionAttachment.Y2];
-                // TODO optimize
-                sprite.x = x1;
-                sprite.y = y1;
-                sprite.rotation = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI+90;
+                var region:AtlasRegion = cast regionAttachment.getRegion();
+                var bone:Bone = slot.getBone();
+                var x:Float = regionAttachment.x - region.offsetX;
+                var y:Float = regionAttachment.y - region.offsetY;
+                wrapper.x = bone.worldX + x * bone.m00 + y * bone.m01;
+                wrapper.y = bone.worldY + x * bone.m10 + y * bone.m11;
+                wrapper.rotation = -(bone.worldRotation + regionAttachment.rotation);
+                wrapper.scaleX = bone.worldScaleX + regionAttachment.scaleX - 1;
+                wrapper.scaleY = bone.worldScaleY + regionAttachment.scaleY - 1;
+
+                wrapper.visible = true;
             }
 		}
 	}
 
     public function get (regionAttachment:RegionAttachment):Sprite {
-        var sprite:Sprite = sprites.get(regionAttachment);
-        if(sprite == null){
-            var region:TextureRegion = regionAttachment.getRegion();
+        var wrapper:Sprite = sprites.get(regionAttachment);
+        if(wrapper == null){
+            var region:AtlasRegion = cast regionAttachment.getRegion();
             var texture:Texture = region.getTexture();
-            sprite = new Sprite();
-            var w:Int = region.getRegionWidth();
-            var h:Int = region.getRegionHeight();
-            var bd = new BitmapData(w, h);
-            bd.copyPixels(texture.bd,
-            new Rectangle(region.getRegionX(),region.getRegionY(),w, h), new Point(0,0));
-            var bmp = new Bitmap(bd);
-            bmp.y = -bd.height;
-            bmp.smoothing = true;
-            sprite.addChild(bmp);
 
-            addChild(sprite);
-            sprites.set(regionAttachment, sprite);
+            var bitmapData:BitmapData = texture.bd;
+            var regionData:BitmapData;
+            if (region.rotate) {
+                regionData = new BitmapData(region.getRegionHeight(), region.getRegionWidth());
+                regionData.copyPixels(bitmapData, //
+                new Rectangle(region.getRegionX(), region.getRegionY(), region.getRegionHeight(), region.getRegionWidth()), //
+                new Point());
+            } else {
+                regionData = new BitmapData(region.getRegionWidth(), region.getRegionHeight());
+                regionData.copyPixels(bitmapData, //
+                new Rectangle(region.getRegionX(), region.getRegionY(), region.getRegionWidth(), region.getRegionHeight()), //
+                new Point());
+            }
+
+            var bitmap:Bitmap = new Bitmap(regionData);
+            bitmap.smoothing = true;
+            bitmap.x = -regionAttachment.width / 2; // Registration point.
+            bitmap.y = -regionAttachment.height / 2;
+            if (region.rotate) {
+                bitmap.rotation = 90;
+                bitmap.x += region.getRegionWidth();
+            }
+
+            wrapper = new Sprite();
+            wrapper.addChild(bitmap);
+
+            sprites.set(regionAttachment, wrapper);
+            addChild(wrapper);
         }
-        return sprite;
+        return wrapper;
     }
     #end
 }
