@@ -52,10 +52,13 @@ class SkeletonRenderer extends Sprite {
     public function new (skeleton:Skeleton) {
        super();
        this.skeleton = skeleton;
-       vs = new nme.Vector<Float>();
-       idx = new nme.Vector<Int>();
-       uvt = new nme.Vector<Float>();
-   }
+        vs = nme.Vector.fromArray([0.0]);
+        idx = nme.Vector.fromArray([0]);
+        uvt = nme.Vector.fromArray([0.0]);
+//        vs = new nme.Vector<Float>();
+//        idx = new nme.Vector<Int>();
+//        uvt = new nme.Vector<Float>();
+    }
 
     public function draw () {
         var vi:Int = 0;

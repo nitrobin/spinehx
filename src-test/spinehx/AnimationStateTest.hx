@@ -13,7 +13,7 @@ class AnimationStateTest extends Sprite {
     var skeleton:Skeleton;
     var root_:Bone;
     var state:AnimationState;
-    var lastTime:Float;
+    var lastTime:Float = 0.0;
 
     var mode:Int = 1;
 
