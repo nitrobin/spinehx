@@ -60,6 +60,14 @@ class SkeletonRenderer extends Sprite {
 //        uvt = new nme.Vector<Float>();
     }
 
+    public function clearBuffers () {
+        // TODO remove this dirty hack
+        vs = nme.Vector.fromArray([0.0]);
+        idx = nme.Vector.fromArray([0]);
+        uvt = nme.Vector.fromArray([0.0]);
+        filled = false;
+    }
+
     public function draw () {
         var vi:Int = 0;
         var vii:Int = 0;
