@@ -1,6 +1,6 @@
-SpineHx is haxe/nme port of spine-libgdx skeletal animation library.
+SpineHx is Haxe/NME port of [spine](http://esotericsoftware.com/) skeletal animation runtime.
 
-Works on Haxe 3 and NME 4.
+Works on Haxe 3 RC2 and NME 3.5.6.
 
 ## Demos
 [Live Flash 1](https://spinehx-demos.googlecode.com/hg/test01/flash/index.html) |
@@ -17,17 +17,15 @@ It is experimental port. Need more tests. Be careful for production using.
 ## License
 BSD/Apache v2.0
 
-
-## See also
-    * https://github.com/EsotericSoftware/spine-runtimes - Original 2D skeletal animation runtimes for Spine.
-    * https://github.com/libgdx/libgdx - Desktop/Android/HTML5/iOS Java game development framework
+## Links
+    * [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes) - Original 2D skeletal animation runtimes for Spine.
+    * [libGDX](https://github.com/libgdx/libgdx) - Desktop/Android/HTML5/iOS Java game development framework
 
 ## Tested targets
     * flash
     * cpp (linux32, android)
-    * html5
-
+    * html5 
 
 ## System requirements
-    * haxe 3 (nightly build prefers)
-    * nme 4 (from git)
+    * haxe 3 RC2
+    * nme 3.5.6
