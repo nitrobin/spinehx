@@ -27,7 +27,8 @@ package spinehx.attachments;
 import spinehx.atlas.TextureRegion;
 import spinehx.Exception;
 import spinehx.atlas.TextureAtlas;
-import spinehx.Arrays;
+import spinehx.ArrayUtils;
+import haxe.ds.Vector;
 
 class RegionAttachment extends Attachment {
     public static inline var X1 = 0;
@@ -59,13 +60,13 @@ class RegionAttachment extends Attachment {
     public var rotation:Float = 0;
     public var width:Float = 0;
     public var height:Float = 0;
-    public var vertices:Array<Float>;
-    public var offset:Array<Float>;
+    public var vertices:Vector<Float>;
+    public var offset:Vector<Float>;
 
 	public function new (name:String) {
 		super(name);
-        vertices = Arrays.allocFloat(20);
-        offset = Arrays.allocFloat(8);
+        vertices = ArrayUtils.allocFloat(20);
+        offset = ArrayUtils.allocFloat(8);
 	}
 
 	public function updateOffset ():Void {
@@ -108,7 +109,6 @@ class RegionAttachment extends Attachment {
 		var localX2Sin:Float = localX2 * sin;
 		var localY2Cos:Float = localY2 * cos + y;
 		var localY2Sin:Float = localY2 * sin;
-		var offset:Array<Float> = this.offset;
 		offset[0] = localXCos - localYSin;
 		offset[1] = localYCos + localXSin;
 		offset[2] = localXCos - localY2Sin;
@@ -123,7 +123,6 @@ class RegionAttachment extends Attachment {
 		if (region == null) throw new IllegalArgumentException("region cannot be null.");
 		var oldRegion:TextureRegion = this.region;
 		this.region = region;
-		var vertices:Array<Float> = this.vertices;
 		if (Std.is(region, AtlasRegion) && (cast(region,AtlasRegion)).rotate) {
 			vertices[U2] = region.getU();
 			vertices[V2] = region.getV2();
@@ -159,13 +158,11 @@ class RegionAttachment extends Attachment {
 				| (Math.floor(255 * skeletonColor.b * slotColor.b) << 16) //
 				| (Math.floor(255 * skeletonColor.g * slotColor.g) << 8) //
 				| (Math.floor(255 * skeletonColor.r * slotColor.r)));
-		var vertices:Array<Float> = this.vertices;
 		vertices[C1] = color;
 		vertices[C2] = color;
 		vertices[C3] = color;
 		vertices[C4] = color;
 
-		var offset:Array<Float> = this.offset;
 		var bone:Bone = slot.getBone();
 		var x:Float = bone.getWorldX();
 		var y:Float = bone.getWorldY();
@@ -183,7 +180,7 @@ class RegionAttachment extends Attachment {
 		vertices[Y4] = offset[6] * m10 + offset[7] * m11 + y;
 	}
 
-	public function getVertices ():Array<Float> {
+	public function getVertices ():Vector<Float> {
 		return vertices;
 	}
 

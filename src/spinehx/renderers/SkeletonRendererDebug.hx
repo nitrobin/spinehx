@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-package spinehx;
+package spinehx.renderers;
 
 import spinehx.attachments.RegionAttachment;
 import spinehx.attachments.Attachment;
@@ -57,7 +57,7 @@ class SkeletonRendererDebug extends Sprite {
             if (Std.is(attachment, RegionAttachment)) {
                 var regionAttachment:RegionAttachment = cast(attachment, RegionAttachment);
                 regionAttachment.updateVertices(slot);
-                var vertices:Array<Float> = regionAttachment.getVertices();
+                var vertices = regionAttachment.getVertices();
                 line(vertices[RegionAttachment.X1], vertices[RegionAttachment.Y1], vertices[RegionAttachment.X2], vertices[RegionAttachment.Y2]);
                 line(vertices[RegionAttachment.X2], vertices[RegionAttachment.Y2], vertices[RegionAttachment.X3], vertices[RegionAttachment.Y3]);
                 line(vertices[RegionAttachment.X3], vertices[RegionAttachment.Y3], vertices[RegionAttachment.X4], vertices[RegionAttachment.Y4]);

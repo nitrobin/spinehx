@@ -26,7 +26,7 @@
 package spinehx;
 
 import spinehx.Exception;
-
+import haxe.ds.Vector;
 
 class Animation {
 
@@ -84,7 +84,7 @@ class Animation {
 	}
 
 	/** @param target After the first and before the last entry. */
-	public static function binarySearch (values:Array<Float>, target:Float, step:Int):Int {
+	public static function binarySearch (values:Vector<Float>, target:Float, step:Int):Int {
 		var low:Int = 0;
 		var high:Int = Math.floor(values.length / step - 2);
 		if (high == 0) return step;
@@ -99,7 +99,7 @@ class Animation {
 		}
 	}
 
-	static function linearSearch (values:Array<Float>, target:Float, step:Int):Int {
+	static function linearSearch (values:Vector<Float>, target:Float, step:Int):Int {
 		var i:Int = 0;var last:Int = values.length - step;
         while (i <= last){
 			if (values[i] > target) return i;
@@ -120,10 +120,10 @@ interface Timeline {
     static private inline var STEPPED:Float = -1;
     static private inline var BEZIER_SEGMENTS:Int = 10;
 
-    private var curves:Array<Float>; // dfx, dfy, ddfx, ddfy, dddfx, dddfy, ...
+    private var curves:Vector<Float>; // dfx, dfy, ddfx, ddfy, dddfx, dddfy, ...
 
     public function new (frameCount:Int) {
-        curves = Arrays.allocFloat((frameCount - 1) * 6);
+        curves = ArrayUtils.allocFloat((frameCount - 1) * 6);
     }
 
     public function apply (skeleton:Skeleton, time:Float, alpha:Float):Void{
@@ -158,7 +158,6 @@ interface Timeline {
         var tmp2x:Float = (cx1 - cx2) * 3 + 1;
         var tmp2y:Float = (cy1 - cy2) * 3 + 1;
         var i:Int = frameIndex * 6;
-        var curves:Array<Float> = this.curves;
         curves[i] = cx1 * pre1 + tmp1x * pre2 + tmp2x * subdiv_step3;
         curves[i + 1] = cy1 * pre1 + tmp1y * pre2 + tmp2y * subdiv_step3;
         curves[i + 2] = tmp1x * pre4 + tmp2x * pre5;
@@ -169,7 +168,6 @@ interface Timeline {
 
     public function getCurvePercent (frameIndex:Int, percent:Float):Float {
         var curveIndex:Int = frameIndex * 6;
-        var curves:Array<Float> = this.curves;
         var dfx:Float = curves[curveIndex];
         if (dfx == LINEAR) return percent;
         if (dfx == STEPPED) return 0;
@@ -204,11 +202,11 @@ class RotateTimeline extends CurveTimeline {
     static private inline var FRAME_VALUE:Int = 1;
 
     private var boneIndex:Int = 0;
-    private var frames:Array<Float>; // time, value, ...
+    private var frames:Vector<Float>; // time, value, ...
 
     public function new (frameCount:Int) {
         super(frameCount);
-        frames = Arrays.allocFloat(frameCount * 2);
+        frames = ArrayUtils.allocFloat(frameCount * 2);
     }
 
     public function setBoneIndex (boneIndex:Int) {
@@ -219,7 +217,7 @@ class RotateTimeline extends CurveTimeline {
         return boneIndex;
     }
 
-    public function getFrames ():Array<Float> {
+    public function getFrames ():Vector<Float> {
         return frames;
     }
 
@@ -231,7 +229,6 @@ class RotateTimeline extends CurveTimeline {
     }
 
     public override function apply (skeleton:Skeleton, time:Float, alpha:Float) {
-        var frames:Array<Float> = this.frames;
         if (time < frames[0]) return; // Time is before first frame.
 
         var bone:Bone = skeleton.bones[boneIndex];
@@ -273,11 +270,11 @@ class TranslateTimeline extends CurveTimeline {
     static inline var FRAME_Y:Int = 2;
 
     var boneIndex:Int = 0;
-    var frames:Array<Float>; // time, value, value, ...
+    var frames:Vector<Float>; // time, value, value, ...
 
     public function new (frameCount:Int) {
         super(frameCount);
-        frames = Arrays.allocFloat(frameCount * 3);
+        frames = ArrayUtils.allocFloat(frameCount * 3);
     }
 
     public function setBoneIndex (boneIndex:Int) {
@@ -288,7 +285,7 @@ class TranslateTimeline extends CurveTimeline {
         return boneIndex;
     }
 
-    public function getFrames ():Array<Float> {
+    public function getFrames ():Vector<Float> {
         return frames;
     }
 
@@ -362,11 +359,11 @@ class ColorTimeline extends CurveTimeline {
     static private inline var FRAME_A:Int = 4;
 
     private var slotIndex:Int = 0;
-    private var frames:Array<Float>; // time, r, g, b, a, ...
+    private var frames:Vector<Float>; // time, r, g, b, a, ...
 
     public function new (frameCount:Int) {
         super(frameCount);
-        frames = Arrays.allocFloat(frameCount * 5);
+        frames = ArrayUtils.allocFloat(frameCount * 5);
     }
 
     public function setSlotIndex (slotIndex:Int) {
@@ -377,7 +374,7 @@ class ColorTimeline extends CurveTimeline {
         return slotIndex;
     }
 
-    public function getFrames ():Array<Float> {
+    public function getFrames ():Vector<Float> {
         return frames;
     }
 
@@ -429,13 +426,12 @@ class ColorTimeline extends CurveTimeline {
 
 class AttachmentTimeline implements Timeline {
     private var slotIndex:Int = 0;
-    private var frames:Array<Float>; // time, ...
-    private var attachmentNames:Array<String>;
+    private var frames:Vector<Float>; // time, ...
+    private var attachmentNames:Vector<String>;
 
     public function new (frameCount:Int) {
-        frames = Arrays.allocFloat(frameCount);
-        attachmentNames = new Array<String>();
-        attachmentNames[frameCount - 1] = null;
+        frames = ArrayUtils.allocFloat(frameCount);
+        attachmentNames = ArrayUtils.allocString(frameCount);
     }
 
     public function getFrameCount ():Int {
@@ -450,11 +446,11 @@ class AttachmentTimeline implements Timeline {
         this.slotIndex = slotIndex;
     }
 
-    public function getFrames ():Array<Float> {
+    public function getFrames ():Vector<Float> {
         return frames;
     }
 
-    public function getAttachmentNames ():Array<String> {
+    public function getAttachmentNames ():Vector<String> {
         return attachmentNames;
     }
 

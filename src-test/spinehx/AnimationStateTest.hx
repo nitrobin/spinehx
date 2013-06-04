@@ -1,4 +1,6 @@
 package spinehx;
+import spinehx.renderers.SkeletonRendererDebug;
+import spinehx.renderers.SkeletonRenderer;
 import spinehx.atlas.TextureAtlas;
 import flash.display.Sprite;
 import flash.events.Event;

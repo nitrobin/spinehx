@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-package spinehx;
+package spinehx.renderers;
 
 import flash.display.Sprite;
 import spinehx.atlas.TextureAtlas.AtlasRegion;
@@ -79,7 +79,7 @@ class SkeletonRenderer extends Sprite {
             if (Std.is(attachment, RegionAttachment)) {
                 var regionAttachment:RegionAttachment = cast(attachment, RegionAttachment);
                 regionAttachment.updateVertices(slot);
-                var vertices:Array<Float> = regionAttachment.getVertices();
+                var vertices = regionAttachment.getVertices();
                 var region:TextureRegion = regionAttachment.getRegion();
                 var texture:Texture = region.getTexture();
                 if(bd == null){

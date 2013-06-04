@@ -25,6 +25,8 @@
 
 package spinehx;
 
+import spinehx.renderers.SkeletonRendererDebug;
+import spinehx.renderers.SkeletonRenderer;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -34,8 +36,6 @@ import spinehx.SkeletonJson;
 import spinehx.Animation;
 import spinehx.Skeleton;
 import spinehx.SkeletonData;
-import spinehx.SkeletonRendererDebug;
-import spinehx.SkeletonRenderer;
 
 class MixTest extends Sprite {
 	var time:Float = 0.0;

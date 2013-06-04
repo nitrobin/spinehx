@@ -25,6 +25,8 @@
 
 package spinehx;
 
+import spinehx.renderers.SkeletonRendererDebug;
+import spinehx.renderers.SkeletonRenderer;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
