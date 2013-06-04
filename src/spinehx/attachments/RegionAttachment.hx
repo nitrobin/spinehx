@@ -25,8 +25,7 @@
 
 package spinehx.attachments;
 import spinehx.atlas.TextureRegion;
-import spinehx.ex.IllegalArgumentException;
-import spinehx.ex.IllegalStateException;
+import spinehx.Exception;
 import spinehx.atlas.TextureAtlas;
 import spinehx.Arrays;
 

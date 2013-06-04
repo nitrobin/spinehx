@@ -27,8 +27,7 @@ package spinehx.attachments;
 import spinehx.atlas.TextureAtlas;
 import spinehx.attachments.RegionSequenceAttachment;
 import spinehx.attachments.RegionAttachment;
-import spinehx.ex.RuntimeException;
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 class AtlasAttachmentLoader implements AttachmentLoader {
     private var atlas:TextureAtlas;
 

@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 package spinehx.attachments;
-import spinehx.ex.IllegalStateException;
+import spinehx.Exception;
 import spinehx.atlas.TextureRegion;
 class RegionSequenceAttachment extends RegionAttachment {
     private var mode:Mode;

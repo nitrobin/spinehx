@@ -23,7 +23,7 @@ package spinehx.atlas;
  * pointing to the right and the y axis pointing downwards.
  * @author mzechner
  * @author Nathan Sweet */
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 class TextureRegion {
     public var texture:Texture;
 	public var u:Float;

@@ -20,7 +20,7 @@ package spinehx.atlas;
 
 import haxe.ds.ObjectMap;
 import haxe.io.Input;
-import spinehx.ex.RuntimeException;
+import spinehx.Exception;
 import haxe.io.Eof;
 import haxe.io.StringInput;
 import spinehx.atlas.Texture;
@@ -164,7 +164,6 @@ class TextureAtlasData {
             }
             try {reader.close();} catch (ignored:Dynamic) { }
         } catch (ex:Dynamic) {
-            trace("error");
             try {reader.close();} catch (ignored:Dynamic) { }
             throw new RuntimeException("Error reading pack file: " + packFile + ":" +ex);
         }

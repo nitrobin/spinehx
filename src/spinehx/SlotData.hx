@@ -26,7 +26,7 @@
 package spinehx;
 
 
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 class SlotData {
 	public var name:String;
     public var boneData:BoneData;

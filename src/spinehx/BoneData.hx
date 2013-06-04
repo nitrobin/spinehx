@@ -25,7 +25,7 @@
 
 package spinehx;
 
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 class BoneData {
     public var parent:BoneData;
     public var name:String;

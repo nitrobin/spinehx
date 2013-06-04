@@ -25,7 +25,7 @@
 
 package spinehx;
 
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 
 class SkeletonData {
 	public var name:String;

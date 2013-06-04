@@ -25,7 +25,7 @@
 
 package spinehx.attachments;
 
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 class Attachment {
 	public var name:String;
 

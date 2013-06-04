@@ -24,16 +24,15 @@
  ******************************************************************************/
 
 package spinehx;
-import spinehx.Maps.StringMap;
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 
 /** Stores mixing times between animations. */
 class AnimationStateData {
 	private var skeletonData:SkeletonData;
-	var animationToMixTime:StringMap<Null<Float>> ;
+	var animationToMixTime:Map<String, Null<Float>> ;
 
 	public function new (skeletonData:SkeletonData) {
-        animationToMixTime = new StringMap<Null<Float>>();
+        animationToMixTime = new Map();
 		this.skeletonData = skeletonData;
 	}
 
@@ -66,10 +65,10 @@ class AnimationStateData {
 }
 class Key {
     //TODO remove string keys
-    public static function makeIdByName (name1:String, name2:String):String {
+    public static inline function makeIdByName (name1:String, name2:String):String {
         return name1 + ":" + name2;
     }
-    public static function makeId (a1:Animation, a2:Animation):String {
+    public static inline function makeId (a1:Animation, a2:Animation):String {
         return makeIdByName(a1.getName(), a2.getName());
     }
 }

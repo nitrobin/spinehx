@@ -26,7 +26,7 @@
 package spinehx;
 
 import spinehx.attachments.Attachment;
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 import Lambda;
 using Lambda;
 

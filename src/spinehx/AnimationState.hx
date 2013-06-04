@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 package spinehx;
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 
 /** Stores state for an animation and automatically mixes between animations. */
 class AnimationState {

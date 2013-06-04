@@ -26,18 +26,16 @@
 package spinehx;
 
 import spinehx.attachments.Attachment;
-import spinehx.Maps.StringMap;
-import spinehx.ex.IllegalArgumentException;
-import spinehx.Maps;
+import spinehx.Exception;
 
 
 /** Stores attachments by slot index and attachment name. */
 class Skin {
     public var name:String;
-    public var attachments: StringMap<AttachmentEntry>;
+    public var attachments: Map<String, AttachmentEntry>;
 
 	public function new (name:String) {
-        attachments = new StringMap<AttachmentEntry>();
+        attachments = new Map();
 		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		this.name = name;
 	}
@@ -68,7 +66,7 @@ class Skin {
 	}
 
 	public function clear () {
-        attachments = new StringMap<AttachmentEntry>();
+        attachments = new Map();
 	}
 
 	public function getName ():String {

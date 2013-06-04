@@ -25,14 +25,14 @@
 
 package spinehx;
 
-import spinehx.ex.IllegalArgumentException;
+import spinehx.Exception;
 
 
 class Animation {
 
 	public var name:String;
 	private var timelines:Array<Timeline>;
-	private var duration:Float;
+	private var duration:Float = 0;
 
 	public function new (name:String, timelines:Array<Timeline>, duration:Float) {
 		if (name == null) throw new IllegalArgumentException("name cannot be null.");
@@ -195,9 +195,6 @@ interface Timeline {
             x += dfx;
             y += dfy;
         }
-        trace(percent);
-        trace(y);
-        trace(x);
         return y + (1 - y) * (percent - x) / (1 - x); // Last point is 1,1.
     }
 }

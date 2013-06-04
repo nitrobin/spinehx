@@ -22,7 +22,6 @@ class Texture {
     public var bd:BitmapData;
     public function new(textureFile:String, format, useMipMaps) {
         this.bd = nme.Assets.getBitmapData(textureFile);
-//        trace(textureFile);
     }
     public function getWidth():Int {
         return bd.width;
