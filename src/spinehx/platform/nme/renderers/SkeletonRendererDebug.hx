@@ -23,11 +23,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-package spinehx.renderers;
+package spinehx.platform.nme.renderers;
 
 import spinehx.attachments.RegionAttachment;
 import spinehx.attachments.Attachment;
-import flash.display.Sprite;
+import nme.display.Sprite;
 class SkeletonRendererDebug extends Sprite {
     var skeleton:Skeleton;
 

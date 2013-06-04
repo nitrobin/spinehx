@@ -25,8 +25,9 @@
 
 package spinehx;
 
-import spinehx.renderers.SkeletonRendererDebug;
-import spinehx.renderers.SkeletonRenderer;
+import spinehx.platform.nme.BitmapDataTextureLoader;
+import spinehx.platform.nme.renderers.SkeletonRendererDebug;
+import spinehx.platform.nme.renderers.SkeletonRenderer;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
@@ -53,7 +54,7 @@ class MixTest extends Sprite {
         super();
 		var name = "spineboy";
 
-		var atlas:TextureAtlas = TextureAtlas.create("assets/" + name + ".atlas", "assets/");
+		var atlas:TextureAtlas = TextureAtlas.create(nme.Assets.getText("assets/" + name + ".atlas"), "assets/", new BitmapDataTextureLoader());
 
 		if (true) {
 			var json = SkeletonJson.create(atlas);

@@ -1,6 +1,7 @@
 package spinehx;
-import spinehx.renderers.SkeletonRendererDebug;
-import spinehx.renderers.SkeletonRenderer;
+import spinehx.platform.nme.BitmapDataTextureLoader;
+import spinehx.platform.nme.renderers.SkeletonRendererDebug;
+import spinehx.platform.nme.renderers.SkeletonRenderer;
 import spinehx.atlas.TextureAtlas;
 import flash.display.Sprite;
 import flash.events.Event;
@@ -22,7 +23,7 @@ class AnimationStateTest extends Sprite {
     public function new() {
         super();
 
-        atlas = TextureAtlas.create("assets/spineboy.atlas", "assets/");
+        atlas = TextureAtlas.create(nme.Assets.getText("assets/spineboy.atlas"), "assets/", new BitmapDataTextureLoader());
         var json = SkeletonJson.create(atlas);
         var skeletonData:SkeletonData = json.readSkeletonData("spineboy", nme.Assets.getText("assets/spineboy.json"));
 

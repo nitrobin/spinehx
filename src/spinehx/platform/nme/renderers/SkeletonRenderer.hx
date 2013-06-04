@@ -23,20 +23,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-package spinehx.renderers;
+package spinehx.platform.nme.renderers;
 
-import flash.display.Sprite;
 import spinehx.atlas.TextureAtlas.AtlasRegion;
 import spinehx.atlas.TextureRegion;
-import spinehx.atlas.Texture;
 import spinehx.attachments.Attachment;
 import spinehx.attachments.RegionAttachment;
-import flash.display.Sprite;
-import flash.display.BitmapData;
-import flash.display.Bitmap;
-import flash.display.TriangleCulling;
-import flash.geom.Rectangle;
-import flash.geom.Point;
+import nme.display.Sprite;
+import nme.display.BitmapData;
+import nme.display.Bitmap;
+import nme.display.TriangleCulling;
+import nme.geom.Rectangle;
+import nme.geom.Point;
 import haxe.ds.ObjectMap;
 
 class SkeletonRenderer extends Sprite {
@@ -81,7 +79,7 @@ class SkeletonRenderer extends Sprite {
                 regionAttachment.updateVertices(slot);
                 var vertices = regionAttachment.getVertices();
                 var region:TextureRegion = regionAttachment.getRegion();
-                var texture:Texture = region.getTexture();
+                var texture:BitmapDataTexture = cast(region.getTexture(), BitmapDataTexture);
                 if(bd == null){
                     bd = texture.bd;
                 } else if(bd!=texture.bd){

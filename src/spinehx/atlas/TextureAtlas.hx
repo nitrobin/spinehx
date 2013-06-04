@@ -18,7 +18,6 @@
 
 package spinehx.atlas;
 
-import haxe.ds.ObjectMap;
 import haxe.io.Input;
 import spinehx.Exception;
 import haxe.io.Eof;
@@ -79,12 +78,12 @@ class TextureAtlasData {
     public var regions:Array<Region>;
     private var tuple:Array<String>;
 
-    public function new (packFile:String, imagesDir:String, flip:Bool) {
+    public function new (packFileData:String, imagesDir:String, flip:Bool) {
         tuple = [null, null, null, null];
         pages = new Array<Page>();
         regions = new Array<Region>();
 
-        var reader = new StringInput(nme.Assets.getText(packFile));// new BufferedReader(new InputStreamReader(packFile.read()), 64);
+        var reader = new StringInput(packFileData);// new BufferedReader(new InputStreamReader(packFile.read()), 64);
         try {
             var pageImage:Page = null;
             while (true) {
@@ -165,7 +164,7 @@ class TextureAtlasData {
             try {reader.close();} catch (ignored:Dynamic) { }
         } catch (ex:Dynamic) {
             try {reader.close();} catch (ignored:Dynamic) { }
-            throw new RuntimeException("Error reading pack file: " + packFile + ":" +ex);
+            throw new RuntimeException("Error reading pack file: " +ex);
         }
 
         regions.sort(function (region1:Region, region2:Region) {
@@ -257,24 +256,24 @@ class TextureAtlas /*implements Disposable*/ {
 //	}
 
 	/** @param flip If true, all regions loaded will be flipped for use with a perspective where 0,0 is the upper left corner. */
-	public static function create (packFile:String, imagesDir:String,  flip:Bool=false):TextureAtlas {
-		return new TextureAtlas(new TextureAtlasData(packFile, imagesDir, flip));
+	public static function create (packFileData:String, imagesDir:String, textureLoader:TextureLoader, flip:Bool=false):TextureAtlas {
+		return new TextureAtlas(new TextureAtlasData(packFileData, imagesDir, flip), textureLoader);
 	}
 
-	public function new (data:TextureAtlasData=null) {
+	public function new (data:TextureAtlasData, textureLoader:TextureLoader) {
         textures = new Array<Texture>();
         regions = new Array<AtlasRegion>();
         if(data!=null){
-            load(data);
+            load(data, textureLoader);
         }
 	}
 
-	private function load (data:TextureAtlasData) {
-		var pageToTexture:ObjectMap<Page, Texture> = new ObjectMap<Page, Texture>();
+	private function load (data:TextureAtlasData, textureLoader:TextureLoader) {
+		var pageToTexture:Map<Page, Texture> = new Map();
 		for (page in data.pages) {
 			var texture:Texture = null;
 			if (page.texture == null) {
-				texture = new Texture(page.textureFile, page.format, page.useMipMaps);
+				texture = textureLoader.loadTexture(page.textureFile, page.format, page.useMipMaps);
 				texture.setFilter(page.minFilter, page.magFilter);
 				texture.setWrap(page.uWrap, page.vWrap);
 			} else {

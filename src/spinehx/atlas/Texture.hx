@@ -17,19 +17,11 @@
  ******************************************************************************/
 
 package spinehx.atlas;
-import flash.display.BitmapData;
-class Texture {
-    public var bd:BitmapData;
-    public function new(textureFile:String, format, useMipMaps) {
-        this.bd = nme.Assets.getBitmapData(textureFile);
-    }
-    public function getWidth():Int {
-        return bd.width;
-    }
-    public function getHeight():Int {
-        return bd.height;
-    }
-    public function dispose():Void {  }
-    public function setWrap(uWrap, vWrap):Void {  }
-    public function setFilter(minFilter, magFilter):Void {  }
+interface Texture {
+
+    public function getWidth():Int ;
+    public function getHeight():Int ;
+    public function dispose():Void;
+    public function setWrap(uWrap:String, vWrap:String):Void;
+    public function setFilter(minFilter:String, magFilter:String):Void ;
 }
