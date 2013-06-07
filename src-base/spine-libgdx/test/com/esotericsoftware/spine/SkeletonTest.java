@@ -27,10 +27,8 @@ package com.esotericsoftware.spine;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -41,7 +39,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.TextureAtlasData;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class SkeletonTest extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -88,23 +85,20 @@ public class SkeletonTest extends ApplicationAdapter {
 
 		skeleton = new Skeleton(skeletonData);
 		if (name.equals("goblins")) skeleton.setSkin("goblin");
-		skeleton.setToBindPose();
+		skeleton.setToSetupPose();
 		skeleton = new Skeleton(skeleton);
-
-		Bone root = skeleton.getRootBone();
-		root.x = 50;
-		root.y = 20;
-		root.scaleX = 1f;
-		root.scaleY = 1f;
 		skeleton.updateWorldTransform();
 
 		Gdx.input.setInputProcessor(new InputAdapter() {
+			public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+				keyDown(0);
+				return true;
+			}
+
 			public boolean keyDown (int keycode) {
-				if (keycode == Keys.SPACE) {
-					if (name.equals("goblins")) {
-						skeleton.setSkin(skeleton.getSkin().getName().equals("goblin") ? "goblingirl" : "goblin");
-						skeleton.setSlotsToBindPose();
-					}
+				if (name.equals("goblins")) {
+					skeleton.setSkin(skeleton.getSkin().getName().equals("goblin") ? "goblingirl" : "goblin");
+					skeleton.setSlotsToSetupPose();
 				}
 				return true;
 			}
@@ -114,11 +108,10 @@ public class SkeletonTest extends ApplicationAdapter {
 	public void render () {
 		time += Gdx.graphics.getDeltaTime();
 
-		Bone root = skeleton.getRootBone();
-		float x = root.getX() + 160 * Gdx.graphics.getDeltaTime() * (skeleton.getFlipX() ? -1 : 1);
+		float x = skeleton.getX() + 160 * Gdx.graphics.getDeltaTime() * (skeleton.getFlipX() ? -1 : 1);
 		if (x > Gdx.graphics.getWidth()) skeleton.setFlipX(true);
 		if (x < 0) skeleton.setFlipX(false);
-		root.setX(x);
+		skeleton.setX(x);
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
@@ -130,7 +123,7 @@ public class SkeletonTest extends ApplicationAdapter {
 		renderer.draw(batch, skeleton);
 		batch.end();
 
-		debugRenderer.draw(batch, skeleton);
+		debugRenderer.draw(skeleton);
 	}
 
 	public void resize (int width, int height) {

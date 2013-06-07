@@ -43,12 +43,14 @@ class SkeletonRendererDebug extends Sprite {
             graphics.moveTo(x1, y1);
             graphics.lineTo(x2, y2);
         }
+        var skeletonX:Float = skeleton.getX();
+        var skeletonY:Float = skeleton.getY();
 
         for (bone in skeleton.getBones()) {
             if (bone.parent == null) continue;
-            var x:Float = bone.data.length * bone.m00 + bone.worldX;
-            var y:Float = bone.data.length * bone.m10 + bone.worldY;
-            line(bone.worldX, bone.worldY, x, y);
+            var x:Float = skeletonX + bone.data.length * bone.m00 + bone.worldX;
+            var y:Float = skeletonY + bone.data.length * bone.m10 + bone.worldY;
+            line(skeletonX + bone.worldX, skeletonY + bone.worldY, x, y);
         }
 
         graphics.lineStyle(1, 0x0000ff);
@@ -68,7 +70,7 @@ class SkeletonRendererDebug extends Sprite {
         graphics.lineStyle(1, 0x00ff00);
 //        graphics.beginFill(0x00ff00);
         for (bone in skeleton.getBones()) {
-            graphics.drawCircle(bone.worldX, bone.worldY, 3);
+            graphics.drawCircle(skeletonX + bone.worldX, skeletonY + bone.worldY, 3);
         }
         graphics.endFill();
     }

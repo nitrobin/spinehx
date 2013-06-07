@@ -199,7 +199,7 @@ public class Animation {
 		static private final int FRAME_VALUE = 1;
 
 		private int boneIndex;
-		private final float[] frames; // time, value, ...
+		private final float[] frames; // time, angle, ...
 
 		public RotateTimeline (int frameCount) {
 			super(frameCount);
@@ -268,7 +268,7 @@ public class Animation {
 		static final int FRAME_Y = 2;
 
 		int boneIndex;
-		final float[] frames; // time, value, value, ...
+		final float[] frames; // time, x, y, ...
 
 		public TranslateTimeline (int frameCount) {
 			super(frameCount);
@@ -419,7 +419,7 @@ public class Animation {
 			float b = lastFrameB + (frames[frameIndex + FRAME_B] - lastFrameB) * percent;
 			float a = lastFrameA + (frames[frameIndex + FRAME_A] - lastFrameA) * percent;
 			if (alpha < 1)
-				color.add(new Color((r - color.r) * alpha, (g - color.g) * alpha, (b - color.b) * alpha, (a - color.a) * alpha));
+				color.add((r - color.r) * alpha, (g - color.g) * alpha, (b - color.b) * alpha, (a - color.a) * alpha);
 			else
 				color.set(r, g, b, a);
 		}

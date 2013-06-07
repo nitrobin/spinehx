@@ -89,6 +89,8 @@ class SkeletonJson {
             boneData.rotation = getFloat(boneMap, "rotation", 0);
             boneData.scaleX = getFloat(boneMap, "scaleX", 1);
             boneData.scaleY = getFloat(boneMap, "scaleY", 1);
+            boneData.inheritScale = boneMap.getBool("inheritScale", true);
+            boneData.inheritRotation = boneMap.getBool("inheritRotation", true);
             skeletonData.addBone(boneData);
         }
 
@@ -106,6 +108,7 @@ class SkeletonJson {
                 if (color != null) slotData.getColor().set2(Color.valueOf(color));
 
                 slotData.setAttachmentName(slotMap.getStr("attachment"));
+                slotData.additiveBlending = slotMap.getBool("additive", false);
 
                 skeletonData.addSlot(slotData);
             }
@@ -156,8 +159,8 @@ class SkeletonJson {
         if (Std.is(attachment, RegionSequenceAttachment)) {
             var regionSequenceAttachment = cast(attachment, RegionSequenceAttachment);
 
-            var fps:Null<Float> = getFloat(map, "fps", null);
-            if (fps == null) throw new SerializationException("Region sequence attachment missing fps: " + name);
+            var fps:Float = getFloat(map, "fps");
+            if (fps == 0) throw new SerializationException("Region sequence attachment missing fps: " + name);
             regionSequenceAttachment.setFrameTime(fps);
 
             var modeString = map.getStr("mode");
@@ -179,14 +182,14 @@ class SkeletonJson {
         return attachment;
     }
 
-    private function getFloat (map:JsonNode, name:String, defaultValue:Null<Float>=null):Null<Float> {
+    private static function getFloat (map:JsonNode, name:String, defaultValue:Float=0):Float {
         var value:Dynamic = map.getDynamic(name);
         if (value == null) return defaultValue;
         if (Std.is(value, Int)) return cast(value, Int);
         return cast(value, Float);
     }
 
-    private function getFloatAt (array:Array<Dynamic>, index:Int):Float {
+    private static function getFloatAt (array:Array<Dynamic>, index:Int):Float {
         var value:Dynamic = array[index];
         if (value == null) return 0;
         if (Std.is(value, Int)) return cast(value, Int);

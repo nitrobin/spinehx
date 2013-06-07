@@ -29,17 +29,17 @@ class AnimationStateTest extends Sprite {
 
         // Define mixing between animations.
         var stateData = new AnimationStateData(skeletonData);
-        stateData.setMixByName("walk", "jump", 0.4);
+        stateData.setMixByName("walk", "jump", 0.2);
         stateData.setMixByName("jump", "walk", 0.4);
+        stateData.setMixByName("jump", "jump", 0.2);
 
         state = new AnimationState(stateData);
         state.setAnimationByName("walk", true);
 
         skeleton = Skeleton.create(skeletonData);
 
-        root_ = skeleton.getRootBone();
-        root_.setX(150);
-        root_.setY(360);
+        skeleton.setX(150);
+        skeleton.setY(360);
         skeleton.setFlipY(true);
 
         skeleton.updateWorldTransform();
@@ -61,8 +61,10 @@ class AnimationStateTest extends Sprite {
         stage.addEventListener(MouseEvent.CLICK, onClick);
     }
     public function onClick(e:Event):Void {
-        mode++;
-        mode%=3;
+//        mode++;
+//        mode%=3;
+        state.setAnimationByName("jump", false);
+        state.addAnimationByNameSimple("walk", true);
     }
 
     public function render(e:Event):Void {

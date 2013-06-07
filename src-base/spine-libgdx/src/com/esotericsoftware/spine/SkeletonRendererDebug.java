@@ -4,21 +4,29 @@ package com.esotericsoftware.spine;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import static com.badlogic.gdx.graphics.g2d.SpriteBatch.*;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 public class SkeletonRendererDebug {
+	static private final Color slotLineColor = new Color(0, 0, 1, 0.5f);
+
 	private ShapeRenderer renderer;
 
 	public SkeletonRendererDebug () {
 		renderer = new ShapeRenderer();
 	}
 
-	public void draw (SpriteBatch batch, Skeleton skeleton) {
+	public void draw (Skeleton skeleton) {
+		float skeletonX = skeleton.getX();
+		float skeletonY = skeleton.getY();
+
+		Gdx.gl.glEnable(GL10.GL_BLEND);
 		renderer.begin(ShapeType.Line);
 
 		renderer.setColor(Color.RED);
@@ -26,12 +34,12 @@ public class SkeletonRendererDebug {
 		for (int i = 0, n = bones.size; i < n; i++) {
 			Bone bone = bones.get(i);
 			if (bone.parent == null) continue;
-			float x = bone.data.length * bone.m00 + bone.worldX;
-			float y = bone.data.length * bone.m10 + bone.worldY;
-			renderer.line(bone.worldX, bone.worldY, x, y);
+			float x = skeletonX + bone.data.length * bone.m00 + bone.worldX;
+			float y = skeletonY + bone.data.length * bone.m10 + bone.worldY;
+			renderer.line(skeletonX + bone.worldX, skeletonY + bone.worldY, x, y);
 		}
 
-		renderer.setColor(Color.BLUE);
+		renderer.setColor(slotLineColor);
 		Array<Slot> slots = skeleton.getSlots();
 		for (int i = 0, n = slots.size; i < n; i++) {
 			Slot slot = slots.get(i);
@@ -50,11 +58,11 @@ public class SkeletonRendererDebug {
 		renderer.end();
 
 		renderer.setColor(Color.GREEN);
-		renderer.begin(ShapeType.Circle);
+		renderer.begin(ShapeType.Filled);
 		for (int i = 0, n = bones.size; i < n; i++) {
 			Bone bone = bones.get(i);
 			renderer.setColor(Color.GREEN);
-			renderer.circle(bone.worldX, bone.worldY, 3);
+			renderer.circle(skeletonX + bone.worldX, skeletonY + bone.worldY, 3);
 		}
 		renderer.end();
 	}

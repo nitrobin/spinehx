@@ -55,8 +55,8 @@ class RegionAttachment extends Attachment {
     public var region:TextureRegion;
     public var x:Float = 0;
     public var y:Float = 0;
-    public var scaleX:Float = 0;
-    public var scaleY:Float = 0;
+    public var scaleX:Float = 1;
+    public var scaleY:Float = 1;
     public var rotation:Float = 0;
     public var width:Float = 0;
     public var height:Float = 0;
@@ -81,8 +81,8 @@ class RegionAttachment extends Attachment {
 			if (region.rotate) {
 				localX += region.offsetX / region.originalWidth * height;
 				localY += region.offsetY / region.originalHeight * width;
-				localX2 -= (region.originalWidth - region.offsetX - region.packedHeight) / region.originalWidth * width;
-				localY2 -= (region.originalHeight - region.offsetY - region.packedWidth) / region.originalHeight * height;
+				localX2 -= (region.originalWidth - region.offsetX - region.packedHeight) / region.originalWidth * height;
+				localY2 -= (region.originalHeight - region.offsetY - region.packedWidth) / region.originalHeight * width;
 			} else {
                 localX += region.offsetX / region.originalWidth * width;
 				localY += region.offsetY / region.originalHeight * height;
@@ -121,7 +121,6 @@ class RegionAttachment extends Attachment {
 
 	public function setRegion (region:TextureRegion):Void {
 		if (region == null) throw new IllegalArgumentException("region cannot be null.");
-		var oldRegion:TextureRegion = this.region;
 		this.region = region;
 		if (Std.is(region, AtlasRegion) && (cast(region,AtlasRegion)).rotate) {
 			vertices[U2] = region.getU();
@@ -151,7 +150,8 @@ class RegionAttachment extends Attachment {
 	}
 
 	public function updateVertices (slot:Slot):Void {
-		var skeletonColor:Color = slot.getSkeleton().getColor();
+        var skeleton:Skeleton = slot.getSkeleton();
+		var skeletonColor:Color = skeleton.getColor();
 		var slotColor:Color = slot.getColor();
 		var color:Float = NumberUtils.intToFloatColor( //
 			(Math.floor(255 * skeletonColor.a * slotColor.a) << 24) //
@@ -164,8 +164,8 @@ class RegionAttachment extends Attachment {
 		vertices[C4] = color;
 
 		var bone:Bone = slot.getBone();
-		var x:Float = bone.getWorldX();
-		var y:Float = bone.getWorldY();
+		var x:Float = bone.getWorldX() + skeleton.getX();
+		var y:Float = bone.getWorldY() + skeleton.getY();
 		var m00:Float = bone.getM00();
 		var m01:Float = bone.getM01();
 		var m10:Float = bone.getM10();

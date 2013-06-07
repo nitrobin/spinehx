@@ -46,7 +46,7 @@ class Bone {
 		if (data == null) throw new IllegalArgumentException("data cannot be null.");
 		this.data = data;
 		this.parent = parent;
-		setToBindPose();
+        setToSetupPose();
 	}
 
 	/** Copy constructor.
@@ -65,21 +65,25 @@ class Bone {
 	/** Computes the world SRT using the parent bone and the local SRT. */
 	public function updateWorldTransform (flipX:Bool, flipY:Bool):Void {
 		var parent:Bone = this.parent;
-		if (parent != null) {
-			worldX = x * parent.m00 + y * parent.m01 + parent.worldX;
-			worldY = x * parent.m10 + y * parent.m11 + parent.worldY;
-			worldScaleX = parent.worldScaleX * scaleX;
-			worldScaleY = parent.worldScaleY * scaleY;
-			worldRotation = parent.worldRotation + rotation;
-		} else {
-			worldX = x;
-			worldY = y;
-			worldScaleX = scaleX;
-			worldScaleY = scaleY;
-			worldRotation = rotation;
-		}
+        if (parent != null) {
+            worldX = x * parent.m00 + y * parent.m01 + parent.worldX;
+            worldY = x * parent.m10 + y * parent.m11 + parent.worldY;
+            if (data.inheritScale) {
+                worldScaleX = parent.worldScaleX * scaleX;
+                worldScaleY = parent.worldScaleY * scaleY;
+            } else {
+                worldScaleX = scaleX;
+                worldScaleY = scaleY;
+            }
+            worldRotation = data.inheritRotation ? parent.worldRotation + rotation : rotation;
+        } else {
+            worldX = flipX ? -x : x;
+            worldY = flipY ? -y : y;
+            worldScaleX = scaleX;
+            worldScaleY = scaleY;
+            worldRotation = rotation;
+        }
         var radians:Float = worldRotation * Math.PI / 180;
-
         var cos:Float = Math.cos(radians);
 		var sin:Float = Math.sin(radians);
 		m00 = cos * worldScaleX;
@@ -96,7 +100,7 @@ class Bone {
 		}
 	}
 
-	public function setToBindPose ():Void {
+	public function setToSetupPose ():Void {
 		var data:BoneData = this.data;
 		x = data.x;
 		y = data.y;

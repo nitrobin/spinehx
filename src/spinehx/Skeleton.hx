@@ -41,6 +41,7 @@ class Skeleton {
     public var time:Float = 0;
     public var flipX:Bool = false;
     public var flipY:Bool = false;
+    public var x:Float = 0; public var y:Float = 0;
 
 	function new () {
         bones = new Array<Bone>();
@@ -102,20 +103,20 @@ class Skeleton {
 			bone.updateWorldTransform(flipX, flipY);
 	}
 
-	/** Sets the bones and slots to their bind pose values. */
-	public function setToBindPose () {
-		setBonesToBindPose();
-		setSlotsToBindPose();
+	/** Sets the bones and slots to their setup pose values. */
+	public function setToSetupPose () {
+        setBonesToSetupPose();
+        setSlotsToSetupPose();
 	}
 
-	public function setBonesToBindPose () {
+	public function setBonesToSetupPose () {
 		for (bone in bones)
-			bone.setToBindPose();
+			bone.setToSetupPose();
 	}
 
-	public function setSlotsToBindPose () {
+	public function setSlotsToSetupPose () {
 		for (i in 0...slots.length)
-			slots[i].setToBindPose(i);
+			slots[i].setToSetupPose(i);
 	}
 
 	public function getData ():SkeletonData {
@@ -250,6 +251,22 @@ class Skeleton {
 	public function setFlipY (flipY:Bool) {
 		this.flipY = flipY;
 	}
+
+    public function getX ():Float {
+        return x;
+    }
+
+    public function setX (x:Float) {
+        this.x = x;
+    }
+
+    public function getY ():Float {
+        return y;
+    }
+
+    public function setY (y:Float) {
+        this.y = y;
+    }
 
 	public function getTime ():Float {
 		return time;

@@ -202,7 +202,7 @@ class RotateTimeline extends CurveTimeline {
     static private inline var FRAME_VALUE:Int = 1;
 
     private var boneIndex:Int = 0;
-    private var frames:Vector<Float>; // time, value, ...
+    private var frames:Vector<Float>; // time, angle, ...
 
     public function new (frameCount:Int) {
         super(frameCount);
@@ -270,7 +270,7 @@ class TranslateTimeline extends CurveTimeline {
     static inline var FRAME_Y:Int = 2;
 
     var boneIndex:Int = 0;
-    var frames:Vector<Float>; // time, value, value, ...
+    var frames:Vector<Float>; // time, x, y, ...
 
     public function new (frameCount:Int) {
         super(frameCount);
@@ -418,7 +418,7 @@ class ColorTimeline extends CurveTimeline {
         var b:Float = lastFrameB + (frames[frameIndex + FRAME_B] - lastFrameB) * percent;
         var a:Float = lastFrameA + (frames[frameIndex + FRAME_A] - lastFrameA) * percent;
         if (alpha < 1)
-            color.add(((r - color.r) * alpha), ((g - color.g) * alpha), ((b - color.b) * alpha), ((a - color.a) * alpha));
+            color.add((r - color.r) * alpha, (g - color.g) * alpha, (b - color.b) * alpha, (a - color.a) * alpha);
         else
             color.set(r, g, b, a);
     }

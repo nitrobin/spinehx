@@ -54,7 +54,7 @@ class Slot {
 		this.skeleton = skeleton;
 		this.bone = bone;
 		color = new Color(1,1,1,1);
-		setToBindPoseDefault();
+        setToSetupPoseDefault();
 	}
 
 	/** Copy constructor. */
@@ -106,13 +106,13 @@ class Slot {
 		return skeleton.time - attachmentTime;
 	}
 
-    public function setToBindPose (slotIndex:Int):Void {
+    public function setToSetupPose (slotIndex:Int):Void {
 		color.set2(data.color);
 		setAttachment(data.attachmentName == null ? null : skeleton.getAttachment(slotIndex, data.attachmentName));
 	}
 
-	public function setToBindPoseDefault () {
-		setToBindPose(skeleton.data.slots.indexOf(data/*, true*/));
+	public function setToSetupPoseDefault () {
+        setToSetupPose(skeleton.data.slots.indexOf(data/*, true*/));
 	}
 
 	public function toString ():String {

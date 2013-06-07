@@ -26,12 +26,12 @@
 package com.esotericsoftware.spine.attachments;
 
 import com.esotericsoftware.spine.Bone;
+import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.Slot;
 
 import static com.badlogic.gdx.graphics.g2d.SpriteBatch.*;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -40,7 +40,7 @@ import com.badlogic.gdx.utils.NumberUtils;
 /** Attachment that displays a texture region. */
 public class RegionAttachment extends Attachment {
 	private TextureRegion region;
-	private float x, y, scaleX, scaleY, rotation, width, height;
+	private float x, y, scaleX = 1, scaleY = 1, rotation, width, height;
 	private final float[] vertices = new float[20];
 	private final float[] offset = new float[8];
 
@@ -60,8 +60,8 @@ public class RegionAttachment extends Attachment {
 			if (region.rotate) {
 				localX += region.offsetX / region.originalWidth * height;
 				localY += region.offsetY / region.originalHeight * width;
-				localX2 -= (region.originalWidth - region.offsetX - region.packedHeight) / region.originalWidth * width;
-				localY2 -= (region.originalHeight - region.offsetY - region.packedWidth) / region.originalHeight * height;
+				localX2 -= (region.originalWidth - region.offsetX - region.packedHeight) / region.originalWidth * height;
+				localY2 -= (region.originalHeight - region.offsetY - region.packedWidth) / region.originalHeight * width;
 			} else {
 				localX += region.offsetX / region.originalWidth * width;
 				localY += region.offsetY / region.originalHeight * height;
@@ -101,7 +101,6 @@ public class RegionAttachment extends Attachment {
 
 	public void setRegion (TextureRegion region) {
 		if (region == null) throw new IllegalArgumentException("region cannot be null.");
-		TextureRegion oldRegion = this.region;
 		this.region = region;
 		float[] vertices = this.vertices;
 		if (region instanceof AtlasRegion && ((AtlasRegion)region).rotate) {
@@ -132,7 +131,8 @@ public class RegionAttachment extends Attachment {
 	}
 
 	public void updateVertices (Slot slot) {
-		Color skeletonColor = slot.getSkeleton().getColor();
+		Skeleton skeleton = slot.getSkeleton();
+		Color skeletonColor = skeleton.getColor();
 		Color slotColor = slot.getColor();
 		float color = NumberUtils.intToFloatColor( //
 			((int)(255 * skeletonColor.a * slotColor.a) << 24) //
@@ -147,8 +147,8 @@ public class RegionAttachment extends Attachment {
 
 		float[] offset = this.offset;
 		Bone bone = slot.getBone();
-		float x = bone.getWorldX();
-		float y = bone.getWorldY();
+		float x = bone.getWorldX() + skeleton.getX();
+		float y = bone.getWorldY() + skeleton.getY();
 		float m00 = bone.getM00();
 		float m01 = bone.getM01();
 		float m10 = bone.getM10();

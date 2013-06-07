@@ -28,9 +28,6 @@ package com.esotericsoftware.spine;
 import com.esotericsoftware.spine.attachments.Attachment;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
 public class Skeleton {
@@ -42,6 +39,7 @@ public class Skeleton {
 	final Color color;
 	float time;
 	boolean flipX, flipY;
+	float x, y;
 
 	public Skeleton (SkeletonData data) {
 		if (data == null) throw new IllegalArgumentException("data cannot be null.");
@@ -101,22 +99,22 @@ public class Skeleton {
 			bones.get(i).updateWorldTransform(flipX, flipY);
 	}
 
-	/** Sets the bones and slots to their bind pose values. */
-	public void setToBindPose () {
-		setBonesToBindPose();
-		setSlotsToBindPose();
+	/** Sets the bones and slots to their setup pose values. */
+	public void setToSetupPose () {
+		setBonesToSetupPose();
+		setSlotsToSetupPose();
 	}
 
-	public void setBonesToBindPose () {
+	public void setBonesToSetupPose () {
 		Array<Bone> bones = this.bones;
 		for (int i = 0, n = bones.size; i < n; i++)
-			bones.get(i).setToBindPose();
+			bones.get(i).setToSetupPose();
 	}
 
-	public void setSlotsToBindPose () {
+	public void setSlotsToSetupPose () {
 		Array<Slot> slots = this.slots;
 		for (int i = 0, n = slots.size; i < n; i++)
-			slots.get(i).setToBindPose(i);
+			slots.get(i).setToSetupPose(i);
 	}
 
 	public SkeletonData getData () {
@@ -257,6 +255,22 @@ public class Skeleton {
 
 	public void setFlipY (boolean flipY) {
 		this.flipY = flipY;
+	}
+
+	public float getX () {
+		return x;
+	}
+
+	public void setX (float x) {
+		this.x = x;
+	}
+
+	public float getY () {
+		return y;
+	}
+
+	public void setY (float y) {
+		this.y = y;
 	}
 
 	public float getTime () {

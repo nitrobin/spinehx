@@ -32,6 +32,7 @@ class SlotData {
     public var boneData:BoneData;
     public var color:Color;
     public var attachmentName:String;
+    public var additiveBlending:Bool = false;
 
 //    public function new () {
 //    color = new Color(1, 1, 1, 1);
@@ -68,6 +69,14 @@ class SlotData {
 	public function getAttachmentName ():String {
 		return attachmentName;
 	}
+
+    public function getAdditiveBlending ():Bool {
+        return additiveBlending;
+    }
+
+    public function setAdditiveBlending (additiveBlending:Bool) {
+        this.additiveBlending = additiveBlending;
+    }
 
 	public function toString ():String {
 		return name;

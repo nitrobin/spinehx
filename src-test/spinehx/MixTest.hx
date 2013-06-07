@@ -69,13 +69,9 @@ class MixTest extends Sprite {
 		jumpAnimation = skeletonData.findAnimation("jump");
 
 		skeleton = Skeleton.create(skeletonData);
-		skeleton.setToBindPose();
 
-		var root_:Bone = skeleton.getRootBone();
-		root_.x = -50;
-		root_.y = 20;
-		root_.scaleX = 1.0;
-		root_.scaleY = 1.0;
+        skeleton.setX(-50);
+        skeleton.setY(20);
         skeleton.setFlipY(true);
 		skeleton.updateWorldTransform();
         lastTime = haxe.Timer.stamp();

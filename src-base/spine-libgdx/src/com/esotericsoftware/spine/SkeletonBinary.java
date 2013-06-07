@@ -32,20 +32,19 @@ import com.esotericsoftware.spine.Animation.RotateTimeline;
 import com.esotericsoftware.spine.Animation.ScaleTimeline;
 import com.esotericsoftware.spine.Animation.Timeline;
 import com.esotericsoftware.spine.Animation.TranslateTimeline;
+import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.AttachmentLoader;
 import com.esotericsoftware.spine.attachments.AttachmentType;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment;
 import com.esotericsoftware.spine.attachments.RegionSequenceAttachment.Mode;
-import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DataInput;
-import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.SerializationException;
 
 import java.io.IOException;
@@ -98,7 +97,7 @@ public class SkeletonBinary {
 				String parentName = input.readString();
 				if (parentName != null) {
 					parent = skeletonData.findBone(parentName);
-					if (parent == null) throw new SerializationException("Bone not found: " + parentName);
+					if (parent == null) throw new SerializationException("Parent bone not found: " + parentName);
 				}
 				BoneData boneData = new BoneData(name, parent);
 				boneData.x = input.readFloat() * scale;
@@ -107,6 +106,8 @@ public class SkeletonBinary {
 				boneData.scaleY = input.readFloat();
 				boneData.rotation = input.readFloat();
 				boneData.length = input.readFloat() * scale;
+				boneData.inheritScale = input.readByte() == 1;
+				boneData.inheritRotation = input.readByte() == 1;
 				skeletonData.addBone(boneData);
 			}
 
@@ -119,6 +120,7 @@ public class SkeletonBinary {
 				SlotData slotData = new SlotData(slotName, boneData);
 				Color.rgba8888ToColor(slotData.getColor(), input.readInt());
 				slotData.setAttachmentName(input.readString());
+				slotData.additiveBlending = input.readByte() == 1;
 				skeletonData.addSlot(slotData);
 			}
 
@@ -137,9 +139,13 @@ public class SkeletonBinary {
 			for (int i = 0, n = input.readInt(true); i < n; i++)
 				readAnimation(input.readString(), input, skeletonData);
 
-			input.close();
 		} catch (IOException ex) {
 			throw new SerializationException("Error reading skeleton file.", ex);
+		} finally {
+			try {
+				input.close();
+			} catch (IOException ignored) {
+			}
 		}
 
 		skeletonData.bones.shrink();

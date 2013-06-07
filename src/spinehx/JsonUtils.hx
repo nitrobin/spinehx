@@ -33,4 +33,11 @@ class JsonUtils {
     public static function getStr(node:JsonNode, field:String):String {
         return cast Reflect.getProperty(node, field);
     }
+    public static function getBool(node:JsonNode, field:String, defaultValue:Bool = false):Bool {
+        var value = Reflect.getProperty(node, field);
+        if(value == null){
+           return defaultValue;
+        }
+        return cast value;
+    }
 }

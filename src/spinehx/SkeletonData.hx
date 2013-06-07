@@ -30,7 +30,7 @@ import spinehx.Exception;
 class SkeletonData {
 	public var name:String;
     public var bones :Array<BoneData>; // Ordered parents first.
-    public var slots :Array<SlotData>; // Bind pose draw order.
+    public var slots :Array<SlotData>; // Setup pose draw order.
     public var skins :Array<Skin>;
     public var animations :Array<Animation>;
     public var defaultSkin:Skin;
@@ -41,8 +41,8 @@ class SkeletonData {
 
 
 	public function clear ():Void {
-        bones = new Array<BoneData>(); // Ordered parents first.
-        slots = new Array<SlotData>(); // Bind pose draw order.
+        bones = new Array<BoneData>();
+        slots = new Array<SlotData>();
         skins = new Array<Skin>();
         animations = new Array<Animation>();
 		defaultSkin = null;

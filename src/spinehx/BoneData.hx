@@ -35,6 +35,7 @@ class BoneData {
     public var rotation:Float = 0;
     public var scaleX:Float = 1;
     public var scaleY:Float = 1;
+    public var inheritScale:Bool = true;public var inheritRotation:Bool = true;
 
 	/** @param parent May be null. */
 	public function new (name:String, parent:BoneData) {
@@ -113,6 +114,22 @@ class BoneData {
 	public function setScaleY (scaleY:Float):Void {
 		this.scaleY = scaleY;
 	}
+
+    public function getInheritScale ():Bool {
+        return inheritScale;
+    }
+
+    public function setInheritScale (inheritScale:Bool) {
+        this.inheritScale = inheritScale;
+    }
+
+    public function getInheritRotation ():Bool {
+        return inheritRotation;
+    }
+
+    public function setInheritRotation (inheritRotation:Bool) {
+        this.inheritRotation = inheritRotation;
+    }
 
 	public function toString ():String {
 		return name;
