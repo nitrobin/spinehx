@@ -40,7 +40,7 @@ import haxe.ds.ObjectMap;
 class SkeletonRenderer extends Sprite {
     var skeleton:Skeleton;
 
-    #if (flash || cpp)
+    #if (flash || cpp || neko)
     var vs:nme.Vector<Float>;
     var idx:nme.Vector<Int>;
     var uvt:nme.Vector<Float>;
@@ -137,7 +137,7 @@ class SkeletonRenderer extends Sprite {
 			if (Std.is(attachment, RegionAttachment)) {
 				var regionAttachment:RegionAttachment = cast(attachment, RegionAttachment);
 				regionAttachment.updateVertices(slot);
-				var vertices:Array<Float> = regionAttachment.getVertices();
+				var vertices = regionAttachment.getVertices();
 
                 var wrapper:Sprite = get(regionAttachment);
 
@@ -160,7 +160,7 @@ class SkeletonRenderer extends Sprite {
         var wrapper:Sprite = sprites.get(regionAttachment);
         if(wrapper == null){
             var region:AtlasRegion = cast regionAttachment.getRegion();
-            var texture:Texture = region.getTexture();
+            var texture:BitmapDataTexture = cast(region.getTexture(), BitmapDataTexture);
 
             var bitmapData:BitmapData = texture.bd;
             var regionData:BitmapData;

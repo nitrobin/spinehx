@@ -31,6 +31,7 @@ import Lambda;
 using Lambda;
 
 class Skeleton {
+    // TODO use haxe.ds.Vector
     public var data:SkeletonData;
     public var bones:Array<Bone>;
 	public var slots:Array<Slot>;
@@ -38,8 +39,8 @@ class Skeleton {
     public var skin:Skin;
     public var color:Color;
     public var time:Float = 0;
-    public var flipX:Bool;
-    public var flipY:Bool;
+    public var flipX:Bool = false;
+    public var flipY:Bool = false;
 
 	function new () {
         bones = new Array<Bone>();
@@ -97,8 +98,8 @@ class Skeleton {
 	public function updateWorldTransform ():Void {
 		var flipX:Bool = this.flipX;
 		var flipY:Bool = this.flipY;
-		for (i in 0...bones.length)
-			bones[i].updateWorldTransform(flipX, flipY);
+		for (bone in bones)
+			bone.updateWorldTransform(flipX, flipY);
 	}
 
 	/** Sets the bones and slots to their bind pose values. */
@@ -108,8 +109,8 @@ class Skeleton {
 	}
 
 	public function setBonesToBindPose () {
-		for (i in 0...bones.length)
-			bones[i].setToBindPose();
+		for (bone in bones)
+			bone.setToBindPose();
 	}
 
 	public function setSlotsToBindPose () {

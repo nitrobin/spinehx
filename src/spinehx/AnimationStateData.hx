@@ -45,30 +45,29 @@ class AnimationStateData {
 		if (_from == null) throw new IllegalArgumentException("Animation not found: " + fromName);
 		var _to:Animation = skeletonData.findAnimation(toName);
 		if (_to == null) throw new IllegalArgumentException("Animation not found: " + toName);
-        var id = Key.makeIdByName(fromName, toName);
+        var id = makeIdByName(fromName, toName);
         animationToMixTime.set(id, duration);
     }
 
 	public function setMix (_from:Animation, _to:Animation, duration:Float):Void {
 		if (_from == null) throw new IllegalArgumentException("_from cannot be null.");
 		if (_to == null) throw new IllegalArgumentException("_to cannot be null.");
-        var id = Key.makeId(_from, _to);
+        var id = makeId(_from, _to);
         animationToMixTime.set(id, duration);
 	}
 
 	public function getMix (_from:Animation, _to:Animation):Float {
-		var id = Key.makeId(_from, _to);
+		var id = makeId(_from, _to);
 		var time:Null<Float> = animationToMixTime.get(id);
 		if (time == null) return 0;
 		return time;
 	}
-}
-class Key {
+
     //TODO remove string keys
-    public static inline function makeIdByName (name1:String, name2:String):String {
+    private static inline function makeIdByName (name1:String, name2:String):String {
         return name1 + ":" + name2;
     }
-    public static inline function makeId (a1:Animation, a2:Animation):String {
+    private static inline function makeId (a1:Animation, a2:Animation):String {
         return makeIdByName(a1.getName(), a2.getName());
     }
 }

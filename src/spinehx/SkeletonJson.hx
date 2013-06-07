@@ -156,8 +156,8 @@ class SkeletonJson {
         if (Std.is(attachment, RegionSequenceAttachment)) {
             var regionSequenceAttachment = cast(attachment, RegionSequenceAttachment);
 
-            var fps:Float = getFloat(map, "fps", -1);
-            if (fps == -1) throw new SerializationException("Region sequence attachment missing fps: " + name);
+            var fps:Null<Float> = getFloat(map, "fps", null);
+            if (fps == null) throw new SerializationException("Region sequence attachment missing fps: " + name);
             regionSequenceAttachment.setFrameTime(fps);
 
             var modeString = map.getStr("mode");
@@ -179,7 +179,7 @@ class SkeletonJson {
         return attachment;
     }
 
-    private function getFloat (map:JsonNode, name:String, defaultValue:Float=0):Float {
+    private function getFloat (map:JsonNode, name:String, defaultValue:Null<Float>=null):Null<Float> {
         var value:Dynamic = map.getDynamic(name);
         if (value == null) return defaultValue;
         if (Std.is(value, Int)) return cast(value, Int);

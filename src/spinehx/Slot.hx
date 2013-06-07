@@ -37,7 +37,7 @@ class Slot {
 	private var  skeleton:Skeleton;
 	public var color:Color;
     public var attachment:Attachment;
-	private var attachmentTime:Float;
+	private var attachmentTime:Float = 0;
 
 //	public function new () {
 //		data = null;
