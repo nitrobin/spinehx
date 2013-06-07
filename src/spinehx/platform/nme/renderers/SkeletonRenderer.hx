@@ -48,21 +48,30 @@ class SkeletonRenderer extends Sprite {
     var filled:Bool = false;
 
     public function new (skeleton:Skeleton) {
-       super();
-       this.skeleton = skeleton;
+        super();
+        this.skeleton = skeleton;
+#if openfl
+        vs = new nme.Vector<Float>();
+        idx = new nme.Vector<Int>();
+        uvt = new nme.Vector<Float>();
+#else
         vs = nme.Vector.fromArray([0.0]);
         idx = nme.Vector.fromArray([0]);
         uvt = nme.Vector.fromArray([0.0]);
-//        vs = new nme.Vector<Float>();
-//        idx = new nme.Vector<Int>();
-//        uvt = new nme.Vector<Float>();
+#end
     }
 
     public function clearBuffers () {
         // TODO remove this dirty hack
+#if openfl
+        vs = new nme.Vector<Float>();
+        idx = new nme.Vector<Int>();
+        uvt = new nme.Vector<Float>();
+#else
         vs = nme.Vector.fromArray([0.0]);
         idx = nme.Vector.fromArray([0]);
         uvt = nme.Vector.fromArray([0.0]);
+#end
         filled = false;
     }
 

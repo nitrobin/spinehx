@@ -107,7 +107,7 @@ class SkeletonTest extends Sprite {
 		time += deltaTime;
 
 		var x:Float = skeleton.getX() + 160 * deltaTime * (skeleton.getFlipX() ? -1 : 1);
-		if (x > nme.Lib.stage.stageWidth) skeleton.setFlipX(true);
+		if (x > stage.stageWidth) skeleton.setFlipX(true);
 		if (x < 0) skeleton.setFlipX(false);
         skeleton.setX(x);
 
