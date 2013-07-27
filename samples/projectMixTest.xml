@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 
-    <meta title="spinehx - SkeletonTest" package="org.bitbucket.nitrobin.spinehx.SkeletonTest" version="1.0.0" company="spinehx" />
-    <app main="spinehx.SkeletonTest" path="out" file="spinehx-SkeletonTest" />
+    <meta title="spinehx - MixTest" package="org.bitbucket.nitrobin.spinehx.MixTest" version="1.0.0" company="spinehx" />
+    <app main="spinehx.MixTest" path="out" file="spinehx-MixTest" />
     <window width="640" height="480" fps="200" unless="mobile"/>
     <window fps="60" if="mobile"/>
+    <source path=".." />
     <source path="src" />
-    <source path="src-test" />
 
+    <haxelib name="spinehx" />
     <haxelib name="openfl" />
     <haxedef name="haxeJSON"/>
     <!--<haxedef name="HXCPP_FLOAT32" if="mobile"/>-->

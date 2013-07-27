@@ -1,4 +1,4 @@
 syntax: glob
-out
+samples/out
 .idea
 *.iml
