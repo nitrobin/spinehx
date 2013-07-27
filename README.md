@@ -1,19 +1,22 @@
-SpineHx is Haxe/NME port of [spine](http://esotericsoftware.com/) skeletal animation runtime.
+SpineHx is Haxe/OpenFL/NME port of [spine](http://esotericsoftware.com/) skeletal animation runtime.
 
-Works on Haxe 3 RC2 and NME 3.5.6.
+Works on Haxe 3 and OpenFL/NME
 
 ## Demos
-[Live Flash 1](https://spinehx-demos.googlecode.com/hg/test01/flash/index.html) |
-[Live Flash 2](https://spinehx-demos.googlecode.com/hg/test02/flash/index.html) |
-[Live Flash 3](https://spinehx-demos.googlecode.com/hg/test03/flash/index.html) |
-[Live HTML5](https://spinehx-demos.googlecode.com/hg/test01/html5/index.html) 
+AnimationStateTest : [Flash](https://spinehx-demos.googlecode.com/hg/v0.2/animationstatetest/flash/index.html) |
+[HTML5](https://spinehx-demos.googlecode.com/hg/v0.2/animationstatetest/html5/index.html)
+
+MixTest : [Flash](https://spinehx-demos.googlecode.com/hg/v0.2/mixtest/flash/index.html) |
+[HTML5](https://spinehx-demos.googlecode.com/hg/v0.2/mixtest/html5/index.html)
+
+SkeletonTest : [Flash](https://spinehx-demos.googlecode.com/hg/v0.2/skeletontest/flash/index.html) |
+[HTML5](https://spinehx-demos.googlecode.com/hg/v0.2/skeletontest/html5/index.html)
 
 [Download Linux binaries](https://spinehx-demos.googlecode.com/hg/test01/linux-bin.tar.gz) |
 [Download Android *.apk](https://spinehx-demos.googlecode.com/hg/test01/spinehx-AnimationStateTest-debug.apk) | 
-[All-in-one](https://bitbucket.org/nitrobin/spinehx/downloads )
 
 ## WARNING
-It is experimental port. Need more tests. Be careful for production using.
+It is experimental port. Need more tests.
 
 ## License
 BSD/Apache v2.0
@@ -28,5 +31,5 @@ BSD/Apache v2.0
 * html5 
 
 ## System requirements
-* haxe 3 RC2
-* nme 3.5.6
+* Haxe 3
+* OpenFL 1.0.x
