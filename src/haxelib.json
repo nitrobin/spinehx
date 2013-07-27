@@ -2,7 +2,7 @@
     "name": "spinehx",
     "url": "https://github.com/nitrobin/spinehx",
     "license": "BSD",
-    "tags": [ "spine", "skeletal animation", "cross", "neko", "flash", "js", "cpp"],
+    "tags": [ "spine", "animation", "cross", "neko", "flash", "js", "cpp"],
     "description": "SpineHx is Haxe 3 OpenFL/NME port of spine-libgdx skeletal animation runtime. ",
     "version": "0.2.0",
     "releasenote": "First haxelib release.",
