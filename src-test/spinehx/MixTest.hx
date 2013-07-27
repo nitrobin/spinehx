@@ -60,6 +60,8 @@ class MixTest extends Sprite {
 
     public function new() {
         super();
+
+        lastTime = haxe.Timer.stamp();
 		var name = "spineboy";
 
 		var atlas:TextureAtlas = TextureAtlas.create(Assets.getText("assets/" + name + ".atlas"), "assets/", new BitmapDataTextureLoader());

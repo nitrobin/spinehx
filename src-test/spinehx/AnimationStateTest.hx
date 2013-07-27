@@ -30,6 +30,7 @@ class AnimationStateTest extends Sprite {
 
     public function new() {
         super();
+        lastTime = haxe.Timer.stamp();
 
         atlas = TextureAtlas.create(Assets.getText("assets/spineboy.atlas"), "assets/", new BitmapDataTextureLoader());
         var json = SkeletonJson.create(atlas);

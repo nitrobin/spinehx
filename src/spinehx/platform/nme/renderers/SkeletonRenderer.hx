@@ -135,6 +135,8 @@ class SkeletonRenderer extends Sprite {
 		var flipX:Int = (skeleton.flipX) ? -1 : 1;
 		var flipY:Int = (skeleton.flipY) ? 1 : -1;
 		var flip:Int = flipX * flipY;
+        var skeletonX:Float = skeleton.getX();
+        var skeletonY:Float = skeleton.getY();
 		for (slot in drawOrder) {
 			var attachment:Attachment = slot.attachment;
 			if (Std.is(attachment, RegionAttachment)) {
@@ -148,8 +150,8 @@ class SkeletonRenderer extends Sprite {
                 var bone:Bone = slot.getBone();
                 var x:Float = regionAttachment.x - region.offsetX;
                 var y:Float = regionAttachment.y - region.offsetY;
-                wrapper.x = bone.worldX + x * bone.m00 + y * bone.m01;
-                wrapper.y = bone.worldY + x * bone.m10 + y * bone.m11;
+                wrapper.x = skeletonX + bone.worldX + x * bone.m00 + y * bone.m01;
+                wrapper.y = skeletonY + bone.worldY + x * bone.m10 + y * bone.m11;
                 wrapper.rotation = -(bone.worldRotation + regionAttachment.rotation) * flip;
                 wrapper.scaleX = (bone.worldScaleX + regionAttachment.scaleX - 1) * flipX;
                 wrapper.scaleY = (bone.worldScaleY + regionAttachment.scaleY - 1) * flipY;

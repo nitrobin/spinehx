@@ -54,6 +54,8 @@ class SkeletonTest extends Sprite {
 
     public function new() {
         super();
+
+        lastTime = haxe.Timer.stamp();
         name = "goblins"; // "spineboy";
 
         var atlas:TextureAtlas = TextureAtlas.create(Assets.getText("assets/" + name + ".atlas"), "assets/", new BitmapDataTextureLoader());
@@ -108,6 +110,9 @@ class SkeletonTest extends Sprite {
         }
     }
 
+//    private static inline function log(s){
+//       untyped __js__("console.log(s);");
+//    }
 
     public function render(e:Event):Void {
         var deltaTime:Float = haxe.Timer.stamp() - lastTime;
@@ -115,8 +120,14 @@ class SkeletonTest extends Sprite {
 		time += deltaTime;
 
 		var x:Float = skeleton.getX() + 160 * deltaTime * (skeleton.getFlipX() ? -1 : 1);
-		if (x > stage.stageWidth) skeleton.setFlipX(true);
-		if (x < 0) skeleton.setFlipX(false);
+		if (x > stage.stageWidth) {
+            x = stage.stageWidth;
+            skeleton.setFlipX(true);
+        }
+		if (x < 0) {
+            x = 0;
+            skeleton.setFlipX(false);
+        }
         skeleton.setX(x);
 
 		animation.apply(skeleton, time, true);
