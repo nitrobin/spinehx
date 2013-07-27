@@ -29,49 +29,40 @@ import spinehx.atlas.TextureAtlas.AtlasRegion;
 import spinehx.atlas.TextureRegion;
 import spinehx.attachments.Attachment;
 import spinehx.attachments.RegionAttachment;
-import nme.display.Sprite;
-import nme.display.BitmapData;
-import nme.display.Bitmap;
-import nme.display.TriangleCulling;
-import nme.geom.Rectangle;
-import nme.geom.Point;
+import flash.display.Sprite;
+import flash.display.BitmapData;
+import flash.display.Bitmap;
+import flash.display.TriangleCulling;
+import flash.geom.Rectangle;
+import flash.geom.Point;
+import flash.Vector;
+
 import haxe.ds.ObjectMap;
 
 class SkeletonRenderer extends Sprite {
     var skeleton:Skeleton;
 
     #if (flash || cpp || neko)
-    var vs:nme.Vector<Float>;
-    var idx:nme.Vector<Int>;
-    var uvt:nme.Vector<Float>;
-    var bd:nme.display.BitmapData;
+    var vs:Vector<Float>;
+    var idx:Vector<Int>;
+    var uvt:Vector<Float>;
+    var bd:BitmapData;
     var filled:Bool = false;
 
     public function new (skeleton:Skeleton) {
         super();
         this.skeleton = skeleton;
-#if openfl
-        vs = new nme.Vector<Float>();
-        idx = new nme.Vector<Int>();
-        uvt = new nme.Vector<Float>();
-#else
-        vs = nme.Vector.fromArray([0.0]);
-        idx = nme.Vector.fromArray([0]);
-        uvt = nme.Vector.fromArray([0.0]);
-#end
+
+        vs = new Vector<Float>();
+        idx = new Vector<Int>();
+        uvt = new Vector<Float>();
     }
 
     public function clearBuffers () {
-        // TODO remove this dirty hack
-#if openfl
-        vs = new nme.Vector<Float>();
-        idx = new nme.Vector<Int>();
-        uvt = new nme.Vector<Float>();
-#else
-        vs = nme.Vector.fromArray([0.0]);
-        idx = nme.Vector.fromArray([0]);
-        uvt = nme.Vector.fromArray([0.0]);
-#end
+
+        vs = new Vector<Float>();
+        idx = new Vector<Int>();
+        uvt = new Vector<Float>();
         filled = false;
     }
 

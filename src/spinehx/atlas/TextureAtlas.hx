@@ -99,7 +99,7 @@ class TextureAtlasData {
 
                     readTuple(reader);
                     var min = /*TextureFilter.valueOf*/(tuple[0]);
-                    var max = /*TextureFilter.valueOf*/(tuple[1]);
+                    var mag = /*TextureFilter.valueOf*/(tuple[1]);
 
                     var direction:String = readValue(reader);
                     var repeatX/*:TextureWrap*/ = "ClampToEdge";
@@ -113,7 +113,7 @@ class TextureAtlasData {
                         repeatY = "Repeat";
                     }
 
-                    pageImage = new Page(file, min == "MipMap", format, min, max, repeatX, repeatY);
+                    pageImage = new Page(file, min == "MipMap", format, min, mag, repeatX, repeatY);
                     pages.push(pageImage);
                 } else {
                     var rotate = /*Boolean.valueOf*/(readValue(reader) == "true");

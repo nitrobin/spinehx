@@ -7,6 +7,14 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
+#if openfl
+import openfl.Assets;
+import openfl.display.FPS;
+#else
+import nme.Assets;
+import nme.display.FPS;
+#end
+
 class AnimationStateTest extends Sprite {
 
     var renderer:SkeletonRenderer;
@@ -23,9 +31,9 @@ class AnimationStateTest extends Sprite {
     public function new() {
         super();
 
-        atlas = TextureAtlas.create(nme.Assets.getText("assets/spineboy.atlas"), "assets/", new BitmapDataTextureLoader());
+        atlas = TextureAtlas.create(Assets.getText("assets/spineboy.atlas"), "assets/", new BitmapDataTextureLoader());
         var json = SkeletonJson.create(atlas);
-        var skeletonData:SkeletonData = json.readSkeletonData("spineboy", nme.Assets.getText("assets/spineboy.json"));
+        var skeletonData:SkeletonData = json.readSkeletonData("spineboy", Assets.getText("assets/spineboy.json"));
 
         // Define mixing between animations.
         var stateData = new AnimationStateData(skeletonData);
@@ -50,7 +58,7 @@ class AnimationStateTest extends Sprite {
         debugRenderer = new SkeletonRendererDebug(skeleton);
         addChild(renderer);
         addChild(debugRenderer);
-        addChild(new nme.display.FPS());
+        addChild(new FPS());
 
         addEventListener(Event.ENTER_FRAME, render);
         addEventListener(Event.ADDED_TO_STAGE, added);

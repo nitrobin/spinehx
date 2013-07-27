@@ -38,6 +38,14 @@ import spinehx.Animation;
 import spinehx.Skeleton;
 import spinehx.SkeletonData;
 
+#if openfl
+import openfl.Assets;
+import openfl.display.FPS;
+#else
+import nme.Assets;
+import nme.display.FPS;
+#end
+
 class MixTest extends Sprite {
 	var time:Float = 0.0;
 	var renderer:SkeletonRenderer;
@@ -54,12 +62,12 @@ class MixTest extends Sprite {
         super();
 		var name = "spineboy";
 
-		var atlas:TextureAtlas = TextureAtlas.create(nme.Assets.getText("assets/" + name + ".atlas"), "assets/", new BitmapDataTextureLoader());
+		var atlas:TextureAtlas = TextureAtlas.create(Assets.getText("assets/" + name + ".atlas"), "assets/", new BitmapDataTextureLoader());
 
 		if (true) {
 			var json = SkeletonJson.create(atlas);
 			// json.setScale(2);
-			skeletonData = json.readSkeletonData(name, nme.Assets.getText("assets/" + name + ".json"));
+			skeletonData = json.readSkeletonData(name, Assets.getText("assets/" + name + ".json"));
 		} /*else {
 			SkeletonBinary binary = new SkeletonBinary(atlas);
 			// binary.setScale(2);
@@ -85,7 +93,7 @@ class MixTest extends Sprite {
         debugRenderer.y = 300;
         addChild(renderer);
         addChild(debugRenderer);
-        addChild(new nme.display.FPS());
+        addChild(new FPS());
 
         addEventListener(Event.ENTER_FRAME, render);
         addEventListener(Event.ADDED_TO_STAGE, added);  renderer.draw();

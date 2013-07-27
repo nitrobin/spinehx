@@ -1,6 +1,7 @@
 package spinehx.platform.nme;
 import spinehx.atlas.Texture;
 import spinehx.atlas.TextureLoader;
+
 class BitmapDataTextureLoader implements TextureLoader{
     public function new() {
     }

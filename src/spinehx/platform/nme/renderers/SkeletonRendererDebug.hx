@@ -27,7 +27,8 @@ package spinehx.platform.nme.renderers;
 
 import spinehx.attachments.RegionAttachment;
 import spinehx.attachments.Attachment;
-import nme.display.Sprite;
+import flash.display.Sprite;
+
 class SkeletonRendererDebug extends Sprite {
     var skeleton:Skeleton;
 
@@ -39,7 +40,7 @@ class SkeletonRendererDebug extends Sprite {
     public function draw() {
         graphics.clear();
         graphics.lineStyle(1, 0xff0000);
-        function line(x1, y1, x2, y2) {
+        inline function line(x1, y1, x2, y2) {
             graphics.moveTo(x1, y1);
             graphics.lineTo(x2, y2);
         }
@@ -60,10 +61,11 @@ class SkeletonRendererDebug extends Sprite {
                 var regionAttachment:RegionAttachment = cast(attachment, RegionAttachment);
                 regionAttachment.updateVertices(slot);
                 var vertices = regionAttachment.getVertices();
-                line(vertices[RegionAttachment.X1], vertices[RegionAttachment.Y1], vertices[RegionAttachment.X2], vertices[RegionAttachment.Y2]);
-                line(vertices[RegionAttachment.X2], vertices[RegionAttachment.Y2], vertices[RegionAttachment.X3], vertices[RegionAttachment.Y3]);
-                line(vertices[RegionAttachment.X3], vertices[RegionAttachment.Y3], vertices[RegionAttachment.X4], vertices[RegionAttachment.Y4]);
-                line(vertices[RegionAttachment.X4], vertices[RegionAttachment.Y4], vertices[RegionAttachment.X1], vertices[RegionAttachment.Y1]);
+                graphics.moveTo(vertices[RegionAttachment.X1], vertices[RegionAttachment.Y1]);
+                graphics.lineTo(vertices[RegionAttachment.X2], vertices[RegionAttachment.Y2]);
+                graphics.lineTo(vertices[RegionAttachment.X3], vertices[RegionAttachment.Y3]);
+                graphics.lineTo(vertices[RegionAttachment.X4], vertices[RegionAttachment.Y4]);
+                graphics.lineTo(vertices[RegionAttachment.X1], vertices[RegionAttachment.Y1]);
             }
         }
 

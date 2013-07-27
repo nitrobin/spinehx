@@ -1,10 +1,17 @@
 package spinehx.platform.nme;
 import spinehx.atlas.Texture;
-import nme.display.BitmapData;
+import flash.display.BitmapData;
+
+#if openfl
+import openfl.Assets;
+#else
+import nme.Assets;
+#end
+
 class BitmapDataTexture implements Texture {
     public var bd:BitmapData;
     public function new(textureFile:String) {
-        this.bd = nme.Assets.getBitmapData(textureFile);
+        this.bd = Assets.getBitmapData(textureFile);
     }
     public function getWidth():Int {
         return bd.width;
