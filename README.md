@@ -21,6 +21,10 @@ It is experimental port. Need more tests.
 ## License
 BSD/Apache v2.0
 
+## Engines support
+* HaxeFlixel - https://github.com/xraven13/FlxSpineSprite
+* Flambe - https://github.com/volkipp/spinehx/commit/cfb554e2a1d113594fba45a45c4fd984806c6499
+
 ## Links
 * [spine-runtimes](https://github.com/EsotericSoftware/spine-runtimes) - Original 2D skeletal animation runtimes for Spine.
 * [libGDX](https://github.com/libgdx/libgdx) - Desktop/Android/HTML5/iOS Java game development framework
