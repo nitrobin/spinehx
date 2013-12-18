@@ -29,7 +29,9 @@ class JsonUtils {
     public static function getInt(node:JsonNode, field:String):Int {
         return cast Reflect.getProperty(node, field);
     }
-
+    public static function getFlt(node:JsonNode, field:String):Float {
+        return cast Reflect.getProperty(node, field);
+    }
     public static function getStr(node:JsonNode, field:String):String {
         return cast Reflect.getProperty(node, field);
     }

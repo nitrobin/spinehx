@@ -36,6 +36,7 @@ import spinehx.Exception;
 import spinehx.attachments.AtlasAttachmentLoader;
 import spinehx.atlas.TextureAtlas;
 import spinehx.JsonUtils;
+import haxe.ds.Vector;
 using spinehx.JsonUtils;
 
 class SkeletonJson {
@@ -293,7 +294,49 @@ class SkeletonJson {
                 }
             }
         }
-
+        
+        var drawOrdersMap:JsonNode = map.getNode("draworder");
+        if (drawOrdersMap != null) {
+            var timeline:DrawOrderTimeline = new DrawOrderTimeline(drawOrdersMap.fields().length);
+            var slotCount:Int = skeletonData.slots.length;
+            var frameIndex:Int = 0;
+            for (timelineName in drawOrdersMap.fields()) {
+                var drawOrderMap:JsonNode = drawOrdersMap.getNode(timelineName);
+                
+                var drawOrder:Vector<Int> = null;
+                var offsets:JsonNode = drawOrderMap.getNode("offsets");
+                if (offsets != null) {
+                    drawOrder = new Vector(slotCount);
+                    for (i in 0 ... slotCount) {
+                        drawOrder[slotCount - i - 1] = -1;
+                    }
+                    var unchanged:Vector<Int> = new Vector(cast (slotCount - offsets.fields().length));
+                    var originalIndex:Int = 0, unchangedIndex:Int = 0;
+                    for (timelineName in offsets.fields()) {
+                        var offsetMap = offsets.getNode(timelineName);
+                        var slotIndex:Int = skeletonData.findSlotIndex(offsetMap.getStr("slot"));
+                        if (slotIndex == -1) throw new SerializationException("Slot not found: " + offsetMap.getString("slot"));
+                        // Collect unchanged items.
+                        while (originalIndex != slotIndex)
+                            unchanged[unchangedIndex++] = originalIndex++;
+                        // Set changed items.
+                        drawOrder[originalIndex + offsetMap.getInt("offset")] = originalIndex++;
+                    }
+                    // Collect remaining unchanged items.
+                    while (originalIndex < slotCount)
+                        unchanged[unchangedIndex++] = originalIndex++;
+                    // Fill in unchanged items.
+                    for (i in 0 ... slotCount) {
+                        var j = slotCount - i - 1;
+                        if (drawOrder[j] == -1) drawOrder[j] = unchanged[--unchangedIndex];
+                    }
+                }
+                timeline.setFrame(frameIndex++, drawOrderMap.getFlt("time"), drawOrder);
+            }
+            timelines.push(timeline);
+            duration = Math.max(duration, timeline.getFrames()[timeline.getFrameCount() - 1]);
+        }
+        
         //timelines.shrink();
         skeletonData.addAnimation(new Animation(name, timelines, duration));
     }
