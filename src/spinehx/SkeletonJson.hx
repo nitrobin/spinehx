@@ -297,12 +297,10 @@ class SkeletonJson {
         
         var drawOrdersMap:JsonNode = map.getNode("draworder");
         if (drawOrdersMap != null) {
-            var timeline:DrawOrderTimeline = new DrawOrderTimeline(drawOrdersMap.fields().length);
+            var timeline:DrawOrderTimeline = new DrawOrderTimeline(drawOrdersMap.length);
             var slotCount:Int = skeletonData.slots.length;
             var frameIndex:Int = 0;
-            for (timelineName in drawOrdersMap.fields()) {
-                var drawOrderMap:JsonNode = drawOrdersMap.getNode(timelineName);
-                
+            for (drawOrderMap in cast(drawOrdersMap, Array<JsonNode>)) {
                 var drawOrder:Vector<Int> = null;
                 var offsets:JsonNode = drawOrderMap.getNode("offsets");
                 if (offsets != null) {
@@ -312,8 +310,7 @@ class SkeletonJson {
                     }
                     var unchanged:Vector<Int> = new Vector(cast (slotCount - offsets.fields().length));
                     var originalIndex:Int = 0, unchangedIndex:Int = 0;
-                    for (timelineName in offsets.fields()) {
-                        var offsetMap = offsets.getNode(timelineName);
+                    for (offsetMap in cast(offsets, Array<JsonNode>)) {
                         var slotIndex:Int = skeletonData.findSlotIndex(offsetMap.getStr("slot"));
                         if (slotIndex == -1) throw new SerializationException("Slot not found: " + offsetMap.getString("slot"));
                         // Collect unchanged items.
