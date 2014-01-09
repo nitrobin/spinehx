@@ -475,3 +475,53 @@ class AttachmentTimeline implements Timeline {
     }
 }
 
+
+class DrawOrderTimeline implements Timeline {
+    private var frames:Vector<Float>;
+    private var drawOrders:Vector<Vector<Int>>;
+    
+    public function new (frameCount:Int) {
+        frames = new Vector(frameCount);
+        drawOrders = new Vector(frameCount);
+    }
+    
+    public function getFrameCount():Int {
+        return frames.length;
+    }
+    
+    public function getFrames():Vector<Float> {
+        return frames;
+    }
+    
+    public function getDrawOrders():Vector<Vector<Int>> {
+        return drawOrders;
+    }
+    
+    /** Sets the time of the specified keyframe.
+     * @param drawOrder May be null to use bind pose draw order. */
+    public function setFrame(frameIndex:Int, time:Float, drawOrder:Vector<Int>) {
+        frames[frameIndex] = time;
+        drawOrders[frameIndex] = drawOrder;
+    }
+
+    public function apply(skeleton:Skeleton, time:Float, alpha:Float) {
+        var frames = this.frames;
+        if (time < frames[0]) return; // Time is before first frame.
+        
+        var frameIndex:Int;
+        if (time >= frames[frames.length - 1]) // Time is after last frame.
+            frameIndex = frames.length - 1;
+        else
+            frameIndex = Animation.binarySearch(frames, time, 1) - 1;
+        
+        var slots:Array<Slot> = skeleton.slots;
+        var drawOrderToSetupIndex:Vector<Int> = drawOrders[frameIndex];
+        if (drawOrderToSetupIndex == null) {
+            for (i in 0 ... slots.length)
+                skeleton.drawOrder[i] = slots[i];
+        } else {
+            for (i in 0 ... drawOrderToSetupIndex.length)
+                skeleton.drawOrder[i] = slots[drawOrderToSetupIndex[i]];
+        }
+    }
+}

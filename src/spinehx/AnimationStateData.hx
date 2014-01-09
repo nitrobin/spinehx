@@ -28,6 +28,8 @@ import spinehx.Exception;
 
 /** Stores mixing times between animations. */
 class AnimationStateData {
+    public var defaultMixTime:Float=0;
+    
 	private var skeletonData:SkeletonData;
 	var animationToMixTime:Map<String, Null<Float>> ;
 
@@ -59,7 +61,7 @@ class AnimationStateData {
 	public function getMix (_from:Animation, _to:Animation):Float {
 		var id = makeId(_from, _to);
 		var time:Null<Float> = animationToMixTime.get(id);
-		if (time == null) return 0;
+		if (time == null) return defaultMixTime;
 		return time;
 	}
 
