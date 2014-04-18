@@ -22,7 +22,7 @@ It is experimental port. Need more tests.
 BSD/Apache v2.0
 
 ## Engines support
-* HaxeFlixel - https://github.com/xraven13/FlxSpineSprite
+* HaxeFlixel - [Demo](http://haxeflixel.com/demos/FlxSpine/) | [FlxSpine.hx](https://github.com/HaxeFlixel/flixel-addons/blob/master/flixel/addons/editors/spine/FlxSpine.hx)
 * Flambe - https://github.com/volkipp/spinehx/commit/cfb554e2a1d113594fba45a45c4fd984806c6499
 
 ## Links
