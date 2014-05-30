@@ -2,7 +2,7 @@ SpineHx is Haxe/OpenFL/NME port of [spine](http://esotericsoftware.com/) skeleta
 
 Works on Haxe 3 and OpenFL/NME
 
-#Other active port
+##Other active port
 https://github.com/bendmorris/spinehaxe
 
 ## Demos
