@@ -2,6 +2,9 @@ SpineHx is Haxe/OpenFL/NME port of [spine](http://esotericsoftware.com/) skeleta
 
 Works on Haxe 3 and OpenFL/NME
 
+#Other active port
+https://github.com/bendmorris/spinehaxe
+
 ## Demos
 AnimationStateTest : [Flash](https://spinehx-demos.googlecode.com/hg/v0.2/animationstatetest/flash/index.html) |
 [HTML5](https://spinehx-demos.googlecode.com/hg/v0.2/animationstatetest/html5/index.html)
